@@ -1,0 +1,15 @@
+:root {
+  --color-ivory: #faf8f5;
+  --color-charcoal: #1a1612;
+  --color-gold: #c9a962;
+  --color-gold-muted: #b8956a;
+  --color-champagne: #e8dfd0;
+  --color-overlay: rgba(15, 14, 12, 0.55);
+
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+
+  --section-py: clamp(4rem, 12vw, 7rem);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
