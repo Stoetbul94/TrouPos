@@ -6,6 +6,7 @@ import { templateCatalog } from "@/config/templates";
 const templateLoaders: Record<TemplateId, () => Promise<{ default: TemplateComponent }>> = {
   "modern-cinematic": () => import("./modern-cinematic"),
   "classic-elegance": () => import("./classic-elegance"),
+  "luxury-floral-gold": () => import("./luxury-floral-gold"),
 };
 
 export const templateRegistry: Record<
@@ -18,6 +19,10 @@ export const templateRegistry: Record<
   ),
   "classic-elegance": dynamic(
     () => import("./classic-elegance"),
+    { loading: () => null },
+  ),
+  "luxury-floral-gold": dynamic(
+    () => import("./luxury-floral-gold"),
     { loading: () => null },
   ),
 };

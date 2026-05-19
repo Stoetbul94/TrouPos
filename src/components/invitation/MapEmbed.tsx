@@ -5,8 +5,17 @@ import type { Venue } from "@/types/invitation";
 import { MotionSection } from "@/components/motion/MotionSection";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
+import { cn } from "@/lib/utils/cn";
 
-export function MapEmbed({ venue }: { venue: Venue }) {
+export function MapEmbed({
+  venue,
+  variant = "dark",
+  showTitle = true,
+}: {
+  venue: Venue;
+  variant?: "dark" | "light";
+  showTitle?: boolean;
+}) {
   const [loaded, setLoaded] = useState(false);
   const mapUrl = venue.mapUrl;
 
@@ -15,16 +24,31 @@ export function MapEmbed({ venue }: { venue: Venue }) {
   return (
     <Container>
       <MotionSection>
-        <h2 className="mb-6 text-center font-display text-3xl font-light">
-          Find Us
-        </h2>
-        <p className="mb-6 text-center text-sm text-ivory/70">
+        {showTitle && (
+          <h2
+            className={cn(
+              "mb-6 text-center font-display text-3xl font-light",
+              variant === "light" ? "text-charcoal" : "text-ivory",
+            )}
+          >
+            Find Us
+          </h2>
+        )}
+        <p
+          className={cn(
+            "mb-6 text-center text-sm",
+            variant === "light" ? "text-charcoal/65" : "text-ivory/70",
+          )}
+        >
           {venue.name} · {venue.city}
           {venue.province && `, ${venue.province}`}
         </p>
         {!loaded && (
           <div className="mb-4 flex justify-center">
-            <Button variant="secondary" onClick={() => setLoaded(true)}>
+            <Button
+              variant={variant === "light" ? "outline" : "secondary"}
+              onClick={() => setLoaded(true)}
+            >
               Load map
             </Button>
           </div>

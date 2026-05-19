@@ -1,4 +1,7 @@
-export type TemplateId = "modern-cinematic" | "classic-elegance";
+export type TemplateId =
+  | "modern-cinematic"
+  | "classic-elegance"
+  | "luxury-floral-gold";
 
 export type SectionId =
   | "hero"
@@ -7,7 +10,19 @@ export type SectionId =
   | "gallery"
   | "dressCode"
   | "venue"
-  | "rsvp";
+  | "rsvp"
+  | "gift";
+
+export interface GiftRegistry {
+  title: string;
+  description: string;
+  accountHolder?: string;
+  bankName?: string;
+  accountNumber?: string;
+  branchCode?: string;
+  reference?: string;
+  externalUrl?: string;
+}
 
 export interface Couple {
   partnerOne: string;
@@ -77,5 +92,6 @@ export interface Invitation {
   theme?: InvitationTheme;
   sections: SectionId[];
   rsvpDeadline?: string;
+  gift?: GiftRegistry;
   locale: string;
 }

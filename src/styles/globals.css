@@ -69,3 +69,10 @@ body {
   color: var(--color-charcoal);
   background: var(--color-ivory);
 }
+
+.invite-floral-gold {
+  --background: #faf6f0;
+  --foreground: var(--color-charcoal);
+  color: var(--color-charcoal);
+  background: #faf6f0;
+}

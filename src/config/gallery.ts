@@ -19,7 +19,7 @@ export const galleryTemplates: GalleryTemplate[] = [
       "https://images.unsplash.com/photo-1520854221256-17451cc791c3?w=800&q=80",
     category: "luxury-floral",
     pricingTier: "Signature",
-    demoId: "classic-elegance",
+    demoId: "luxury-floral-gold",
   },
   {
     id: "floral-gardenia",
@@ -29,6 +29,7 @@ export const galleryTemplates: GalleryTemplate[] = [
       "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
     category: "luxury-floral",
     pricingTier: "Couture",
+    demoId: "luxury-floral-gold",
   },
   {
     id: "minimal-horizon",

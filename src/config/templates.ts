@@ -19,4 +19,13 @@ export const templateCatalog: TemplateMeta[] = [
       "https://images.unsplash.com/photo-1465495976277-353ecfa9f2dd?w=800&q=80",
     tags: ["classic", "elegant", "timeless"],
   },
+  {
+    id: "luxury-floral-gold",
+    name: "Luxury Floral Gold",
+    description:
+      "Romantic florals, floating gold petals, and cinematic ivory-and-gold elegance.",
+    previewImage:
+      "https://images.unsplash.com/photo-1520854221256-17451cc791c3?w=800&q=80",
+    tags: ["floral", "gold", "romantic", "cinematic"],
+  },
 ];

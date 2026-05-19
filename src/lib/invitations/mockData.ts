@@ -99,21 +99,68 @@ const baseInvitation = {
   ] satisfies SectionId[],
 };
 
+const floralMedia = {
+  heroImage:
+    "https://images.unsplash.com/photo-1520854221256-17451cc791c3?w=1920&q=80",
+  heroPoster:
+    "https://images.unsplash.com/photo-1520854221256-17451cc791c3?w=1200&q=70",
+  ogImage:
+    "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80",
+  gallery: [
+    {
+      id: "fg1",
+      src: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
+      alt: "Floral arch ceremony setting",
+    },
+    {
+      id: "fg2",
+      src: "https://images.unsplash.com/photo-1520854221256-17451cc791c3?w=800&q=80",
+      alt: "Romantic golden floral details",
+    },
+    {
+      id: "fg3",
+      src: "https://images.unsplash.com/photo-1469371670804-432a26d33670?w=800&q=80",
+      alt: "Couple portrait among flowers",
+    },
+  ],
+};
+
+const placeholderGift = {
+  title: "Gifts & blessings",
+  description:
+    "Your presence is the greatest gift. Should you wish to honour us further, a contribution to our new chapter would be warmly appreciated.",
+  bankName: "First National Bank",
+  accountHolder: "Amara & Thabo Wedding",
+  accountNumber: "627 1234 5678",
+  branchCode: "250655",
+  reference: "AmaraThabo2026",
+};
+
 function buildInvitation(
   slug: string,
   templateId: TemplateId,
   id: string,
 ): Invitation {
+  const isClassic = templateId === "classic-elegance";
+  const isFloral = templateId === "luxury-floral-gold";
+
   return {
     id,
     slug,
     templateId,
     ...baseInvitation,
-    sections: [...baseInvitation.sections] as SectionId[],
+    sections: isFloral
+      ? (["hero", "events", "venue", "gallery", "rsvp", "gift"] as SectionId[])
+      : ([...baseInvitation.sections] as SectionId[]),
+    media: isFloral ? floralMedia : baseInvitation.media,
+    gift: isFloral ? placeholderGift : undefined,
     theme: {
-      accentColor: templateId === "classic-elegance" ? "#b8956a" : "#c9a962",
-      backgroundColor:
-        templateId === "classic-elegance" ? "#faf8f5" : "#0f0e0c",
+      accentColor: isClassic ? "#b8956a" : "#c9a962",
+      backgroundColor: isClassic
+        ? "#faf8f5"
+        : isFloral
+          ? "#faf6f0"
+          : "#0f0e0c",
     },
   };
 }
@@ -129,12 +176,19 @@ export const mockInvitations: Record<string, Invitation> = {
     "classic-elegance",
     "inv-002",
   ),
+  "amara-thabo-floral": buildInvitation(
+    "amara-thabo-floral",
+    "luxury-floral-gold",
+    "inv-003",
+  ),
 };
 
 export function getDemoInvitation(templateId: TemplateId): Invitation {
-  const slug =
-    templateId === "classic-elegance"
-      ? "amara-thabo-classic"
-      : "amara-thabo";
+  const slugByTemplate: Record<TemplateId, string> = {
+    "modern-cinematic": "amara-thabo",
+    "classic-elegance": "amara-thabo-classic",
+    "luxury-floral-gold": "amara-thabo-floral",
+  };
+  const slug = slugByTemplate[templateId];
   return mockInvitations[slug] ?? buildInvitation(slug, templateId, "demo");
 }

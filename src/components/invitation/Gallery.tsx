@@ -6,16 +6,32 @@ import { MotionSection } from "@/components/motion/MotionSection";
 import { Container } from "@/components/layout/Container";
 import { m } from "framer-motion";
 import { staggerContainer, fadeUp } from "@/lib/animations/variants";
+import { cn } from "@/lib/utils/cn";
 
-export function Gallery({ images }: { images: GalleryImage[] }) {
+export function Gallery({
+  images,
+  variant = "dark",
+  showTitle = true,
+}: {
+  images: GalleryImage[];
+  variant?: "dark" | "light";
+  showTitle?: boolean;
+}) {
   if (!images.length) return null;
 
   return (
     <Container>
       <MotionSection>
-        <h2 className="mb-8 text-center font-display text-3xl font-light">
-          Moments
-        </h2>
+        {showTitle && (
+          <h2
+            className={cn(
+              "mb-8 text-center font-display text-3xl font-light",
+              variant === "light" ? "text-charcoal" : "text-ivory",
+            )}
+          >
+            Moments
+          </h2>
+        )}
         <m.div
           className="grid grid-cols-1 gap-4 sm:grid-cols-3"
           variants={staggerContainer}

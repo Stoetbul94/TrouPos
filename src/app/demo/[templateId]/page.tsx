@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { InvitationView } from "@/components/invitation/InvitationView";
 import { getDemoInvitation } from "@/lib/invitations/getInvitation";
-import { getTemplateMeta, isValidTemplateId } from "@/templates/registry";
+import { getTemplateMeta, isValidTemplateId, templateIds } from "@/templates/registry";
 import { siteConfig } from "@/config/site";
 
 interface DemoPageProps {
@@ -10,10 +10,7 @@ interface DemoPageProps {
 }
 
 export async function generateStaticParams() {
-  return [
-    { templateId: "modern-cinematic" },
-    { templateId: "classic-elegance" },
-  ];
+  return templateIds.map((templateId) => ({ templateId }));
 }
 
 export async function generateMetadata({
