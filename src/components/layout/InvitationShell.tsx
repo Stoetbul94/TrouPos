@@ -23,7 +23,7 @@ export function InvitationShell({
       className={cn(
         "invite-shell relative min-h-dvh overflow-x-hidden",
         variant === "light" && "invite-classic bg-ivory text-charcoal",
-        variant === "dark" && "bg-charcoal text-ivory",
+        variant === "dark" && "bg-charcoal text-ivory invite-shell-mesh",
         className,
       )}
     >

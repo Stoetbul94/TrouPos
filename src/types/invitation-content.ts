@@ -49,6 +49,12 @@ export interface WeddingInvitationContent {
   dressCode?: string;
   heroVideo?: string;
   heroPoster?: string;
+  /** Optional atmospheric imagery for section backgrounds */
+  atmosphere?: {
+    quoteBackground?: string;
+    detailsAccent?: string;
+    storyAmbience?: string;
+  };
 }
 
 export interface InvitationMeta {

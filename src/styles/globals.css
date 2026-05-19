@@ -133,3 +133,87 @@ a,
     -webkit-backdrop-filter: blur(8px);
   }
 }
+
+/* Cinematic layering */
+.cinematic-hero-glow {
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 85%,
+    color-mix(in srgb, var(--theme-accent, var(--color-gold)) 18%, transparent),
+    transparent 65%
+  );
+}
+
+.cinematic-vignette {
+  background: var(--cinematic-vignette);
+}
+
+.glass-panel {
+  background: color-mix(in srgb, var(--color-ivory) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-ivory) 12%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.invite-classic .glass-panel,
+.invite-floral-gold .glass-panel {
+  background: color-mix(in srgb, white 55%, transparent);
+  border-color: color-mix(in srgb, var(--color-charcoal) 8%, transparent);
+}
+
+.glass-panel-solid {
+  background: color-mix(in srgb, var(--color-charcoal) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-ivory) 10%, transparent);
+}
+
+.section-transition-band {
+  height: var(--section-gap-band);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--theme-accent, var(--color-gold)) 6%, transparent),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.section-transition-band--dark {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--color-ivory) 4%, transparent),
+    transparent
+  );
+}
+
+.invite-shell-mesh {
+  background-image:
+    radial-gradient(
+      ellipse 80% 50% at 0% 0%,
+      color-mix(in srgb, var(--theme-accent, var(--color-gold)) 3%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 70% 45% at 100% 100%,
+      color-mix(in srgb, var(--theme-accent, var(--color-gold)) 3%, transparent),
+      transparent 50%
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns {
+    animation: none !important;
+  }
+}
+
+.ken-burns {
+  animation: ken-burns 28s ease-in-out infinite alternate;
+}
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}

@@ -31,4 +31,13 @@
 
   scroll-padding-top: 1.5rem;
   scroll-padding-bottom: var(--invite-footer-pad);
+
+  /* Cinematic depth */
+  --cinematic-vignette: radial-gradient(
+    ellipse 85% 75% at 50% 45%,
+    transparent 35%,
+    rgba(15, 14, 12, 0.55) 100%
+  );
+  --layer-blur: 0px;
+  --section-gap-band: clamp(1.5rem, 4vw, 3rem);
 }

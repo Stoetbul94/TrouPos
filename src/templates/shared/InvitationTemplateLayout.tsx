@@ -24,6 +24,18 @@ import { cn } from "@/lib/utils/cn";
 
 export type InvitationShellVariant = "dark" | "light";
 
+function SectionTransitionBand({ dark }: { dark?: boolean }) {
+  return (
+    <div
+      className={cn(
+        "section-transition-band",
+        dark && "section-transition-band--dark",
+      )}
+      aria-hidden
+    />
+  );
+}
+
 export function InvitationTemplateLayout({
   content,
   meta,
@@ -57,6 +69,7 @@ export function InvitationTemplateLayout({
   const showGallery =
     meta.sections.includes("gallery") && content.galleryImages.length > 0;
   const inviteUrl = buildInviteUrl(meta.slug);
+  const atmosphere = content.atmosphere;
 
   return (
     <InvitationThemeProvider content={content} className={themeProviderClassName}>
@@ -68,95 +81,128 @@ export function InvitationTemplateLayout({
           )}
 
           {content.quote && (
-            <QuoteSection quote={content.quote} variant={uiVariant} />
+            <>
+              <SectionTransitionBand dark={shellVariant === "dark"} />
+              <QuoteSection
+                quote={content.quote}
+                variant={uiVariant}
+                backgroundImage={atmosphere?.quoteBackground}
+              />
+            </>
           )}
 
           {meta.sections.includes("story") && content.story && content.story.length > 0 && (
-            <Section
-              id="story"
-              className={cn(
-                shellVariant === "light" && "bg-champagne/30",
-                storySectionClassName,
-              )}
-            >
-              <StorySection story={content.story} variant={uiVariant} />
-            </Section>
+            <>
+              {content.quote && <SectionTransitionBand dark={shellVariant === "dark"} />}
+              <Section
+                id="story"
+                className={cn(
+                  "!p-0",
+                  shellVariant === "light" && "bg-champagne/30",
+                  storySectionClassName,
+                )}
+              >
+                <StorySection
+                  story={content.story}
+                  variant={uiVariant}
+                  ambienceImage={atmosphere?.storyAmbience}
+                />
+              </Section>
+            </>
           )}
 
           {meta.sections.includes("events") &&
             (detailsLayout === "card" ? (
-              <WeddingDetailsSection
-                content={content}
-                variant={uiVariant}
-                layout="card"
-                invitationSlug={meta.slug}
-                inviteUrl={inviteUrl}
-              />
-            ) : (
-              <Section id="events" dark={shellVariant === "dark"} className="scroll-mt-24">
+              <>
+                <SectionTransitionBand />
                 <WeddingDetailsSection
                   content={content}
                   variant={uiVariant}
-                  layout="events-list"
+                  layout="card"
                   invitationSlug={meta.slug}
                   inviteUrl={inviteUrl}
                 />
-              </Section>
+              </>
+            ) : (
+              <>
+                <SectionTransitionBand dark={shellVariant === "dark"} />
+                <Section id="events" dark={shellVariant === "dark"} className="scroll-mt-24 !p-0">
+                  <WeddingDetailsSection
+                    content={content}
+                    variant={uiVariant}
+                    layout="events-list"
+                    invitationSlug={meta.slug}
+                    inviteUrl={inviteUrl}
+                  />
+                </Section>
+              </>
             ))}
 
           {meta.sections.includes("venue") && (
-            <VenueMap
-              content={content}
-              variant={uiVariant}
-              showHeading={heroVariant === "floral"}
-              className={
-                heroVariant !== "floral"
-                  ? shellVariant === "light"
-                    ? "text-charcoal"
+            <>
+              <SectionTransitionBand dark={shellVariant === "dark"} />
+              <VenueMap
+                content={content}
+                variant={uiVariant}
+                showHeading={heroVariant === "floral"}
+                className={
+                  heroVariant !== "floral"
+                    ? shellVariant === "light"
+                      ? "text-charcoal"
+                      : undefined
                     : undefined
-                  : undefined
-              }
-            />
+                }
+              />
+            </>
           )}
 
           {showGallery && (
-            <GallerySection
-              content={content}
-              variant={uiVariant}
-              showHeading={heroVariant === "floral"}
-              title={galleryTitle}
-              subtitle={gallerySubtitle}
-            />
+            <>
+              <SectionTransitionBand dark={shellVariant === "dark"} />
+              <GallerySection
+                content={content}
+                variant={uiVariant}
+                showHeading={heroVariant === "floral"}
+                title={galleryTitle}
+                subtitle={gallerySubtitle}
+              />
+            </>
           )}
 
           {meta.sections.includes("dressCode") && content.dressCode && (
-            <Section
-              id="dressCode"
-              className={cn(shellVariant === "light" && "text-charcoal")}
-            >
-              <DressCode dressCode={content.dressCode} />
-            </Section>
+            <>
+              <SectionTransitionBand dark={shellVariant === "dark"} />
+              <Section
+                id="dressCode"
+                className={cn("!p-0", shellVariant === "light" && "text-charcoal")}
+              >
+                <DressCode dressCode={content.dressCode} variant={uiVariant} />
+              </Section>
+            </>
           )}
 
           {meta.sections.includes("rsvp") && (
-            <Section
-              id="rsvp-section"
-              className={cn(
-                "scroll-mt-24",
-                rsvpSectionClassName ??
-                  (shellVariant === "light"
-                    ? "border-t border-charcoal/10 bg-charcoal text-ivory"
-                    : undefined),
-              )}
-            >
-              <div id="rsvp">
-                <DynamicRsvpSection
-                  rsvpLink={content.rsvpLink}
-                  invitationSlug={meta.slug}
-                  variant={shellVariant === "light" ? "dark" : uiVariant}
-                />
-              </div>
-            </Section>
+            <>
+              <SectionTransitionBand dark={shellVariant === "dark"} />
+              <Section
+                id="rsvp-section"
+                className={cn(
+                  "scroll-mt-24",
+                  rsvpSectionClassName ??
+                    (shellVariant === "light"
+                      ? "border-t border-charcoal/10 bg-charcoal text-ivory"
+                      : undefined),
+                )}
+              >
+                <div id="rsvp">
+                  <DynamicRsvpSection
+                    rsvpLink={content.rsvpLink}
+                    invitationSlug={meta.slug}
+                    variant={shellVariant === "light" ? "dark" : uiVariant}
+                  />
+                </div>
+              </Section>
+            </>
           )}
 
           {meta.sections.includes("gift") && (gift || content.bankDetails) && (
@@ -167,6 +213,10 @@ export function InvitationTemplateLayout({
                 shellVariant === "dark" && "border-ivory/10",
               )}
             >
+              <div
+                className="pointer-events-none mb-8 h-px w-full bg-gradient-to-r from-transparent via-gold/20 to-transparent"
+                aria-hidden
+              />
               <GiftRegistrySection
                 content={content}
                 gift={gift}

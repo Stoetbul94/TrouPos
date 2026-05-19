@@ -14,6 +14,7 @@ export function GallerySection({
   className,
   subtitle = "Moments",
   title = "Our moments",
+  fullBleed = true,
 }: {
   content: WeddingInvitationContent;
   variant?: "dark" | "light";
@@ -21,6 +22,7 @@ export function GallerySection({
   className?: string;
   subtitle?: string;
   title?: string;
+  fullBleed?: boolean;
 }) {
   const images = galleryContentToImages(content.galleryImages);
   if (!images.length) return null;
@@ -56,7 +58,12 @@ export function GallerySection({
           </MotionSection>
         </Container>
       )}
-      <Gallery images={images} variant={variant} showTitle={false} />
+      <Gallery
+        images={images}
+        variant={variant}
+        showTitle={false}
+        fullBleed={fullBleed}
+      />
     </section>
   );
 }

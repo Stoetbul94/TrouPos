@@ -1,3 +1,4 @@
+import { unsplashUrl } from "@/lib/cinematic/imagePresets";
 import type {
   GalleryImageContent,
   InvitationMeta,
@@ -206,6 +207,8 @@ export function buildMockInvitation(
 ): Invitation {
   const content = createDefaultContent({
     ...contentOverrides,
+    atmosphere:
+      contentOverrides?.atmosphere ?? atmosphereForTemplate(templateId),
     story:
       contentOverrides?.story ??
       (templateId !== "luxury-floral-gold" ? defaultStory : undefined),
@@ -263,12 +266,16 @@ const defaultStory = [
     year: "2019",
     title: "Cape Town",
     body: "A chance meeting at a friend's rooftop sundowner turned into hours of conversation.",
+    image: unsplashUrl("1465495976277-353ecfa9f2dd"),
+    imageAlt: "Couple walking through vineyards at golden hour",
   },
   {
     id: "2",
     year: "2022",
     title: "The Proposal",
     body: "Thabo asked among the proteas on a Winelands morning — she said yes before he finished the question.",
+    image: unsplashUrl("1511285560929-f80fd9e1239a"),
+    imageAlt: "Hands intertwined with engagement ring",
   },
   {
     id: "3",
@@ -295,39 +302,54 @@ function backgroundForTemplate(templateId: TemplateId): string {
 
 function heroForTemplate(templateId: TemplateId): string {
   if (templateId === "luxury-floral-gold") {
-    return "https://images.unsplash.com/photo-1520854221256-17451cc791c3?w=1920&q=80";
+    return unsplashUrl("1520854221256-17451cc791c3", { width: 1920 });
   }
-  return "https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80";
+  if (templateId === "classic-elegance") {
+    return unsplashUrl("1606800052052-a08af8348e18", { width: 1920 });
+  }
+  return unsplashUrl("1519741497674-611481863552", { width: 1920 });
+}
+
+function atmosphereForTemplate(
+  templateId: TemplateId,
+): WeddingInvitationContent["atmosphere"] {
+  if (templateId === "luxury-floral-gold") {
+    return {
+      quoteBackground: unsplashUrl("1519225421980-715cb0215aed"),
+      detailsAccent: unsplashUrl("1469371670804-432a26d33670"),
+      storyAmbience: unsplashUrl("1520854221256-17451cc791c3"),
+    };
+  }
+  if (templateId === "classic-elegance") {
+    return {
+      quoteBackground: unsplashUrl("1465495976277-353ecfa9f2dd"),
+      detailsAccent: unsplashUrl("1519167758481-83f29da8ae43"),
+      storyAmbience: unsplashUrl("1511285560929-f80fd9e1239a"),
+    };
+  }
+  return {
+    quoteBackground: unsplashUrl("1522673607860-1bda3141a7b2"),
+    detailsAccent: unsplashUrl("1519167758481-83f29da8ae43"),
+    storyAmbience: unsplashUrl("1465495976277-353ecfa9f2dd"),
+  };
 }
 
 function defaultGalleryForTemplate(templateId: TemplateId): GalleryImageContent[] {
-  const floral = [
-    {
-      src: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
-      alt: "Floral arch ceremony",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1520854221256-17451cc791c3?w=800&q=80",
-      alt: "Golden floral details",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1469371670804-432a26d33670?w=800&q=80",
-      alt: "Couple among flowers",
-    },
+  const floral: GalleryImageContent[] = [
+    { src: unsplashUrl("1519225421980-715cb0215aed"), alt: "Floral arch ceremony" },
+    { src: unsplashUrl("1520854221256-17451cc791c3"), alt: "Golden floral tablescape" },
+    { src: unsplashUrl("1469371670804-432a26d33670"), alt: "Couple among proteas" },
+    { src: unsplashUrl("1465495976277-353ecfa9f2dd"), alt: "Winelands golden hour" },
+    { src: unsplashUrl("1511285560929-f80fd9e1239a"), alt: "Hands with wedding bands" },
+    { src: unsplashUrl("1606800052052-a08af8348e18"), alt: "Intimate portrait" },
   ];
-  const standard = [
-    {
-      src: "https://images.unsplash.com/photo-1606800052052-a08af8348e18?w=800&q=80",
-      alt: "Engagement portrait",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1465495976277-353ecfa9f2dd?w=800&q=80",
-      alt: "Vineyard walk",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1522673607860-1bda3141a7b2?w=800&q=80",
-      alt: "Golden hour",
-    },
+  const standard: GalleryImageContent[] = [
+    { src: unsplashUrl("1606800052052-a08af8348e18"), alt: "Engagement portrait" },
+    { src: unsplashUrl("1465495976277-353ecfa9f2dd"), alt: "Vineyard walk at sunset" },
+    { src: unsplashUrl("1522673607860-1bda3141a7b2"), alt: "Golden hour embrace" },
+    { src: unsplashUrl("1519167758481-83f29da8ae43"), alt: "Winery celebration table" },
+    { src: unsplashUrl("1511285560929-f80fd9e1239a"), alt: "Hands intertwined" },
+    { src: unsplashUrl("1519741497674-611481863552"), alt: "Cinematic couple portrait" },
   ];
   return templateId === "luxury-floral-gold" ? floral : standard;
 }

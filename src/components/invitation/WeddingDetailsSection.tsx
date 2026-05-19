@@ -2,7 +2,10 @@
 
 import { m } from "framer-motion";
 import type { WeddingInvitationContent } from "@/types/invitation-content";
+import { AmbientSection } from "@/components/cinematic/AmbientSection";
 import { AddToCalendar } from "@/components/invitation/calendar";
+import { OptimizedMedia } from "@/components/media/OptimizedMedia";
+import { useLiteEffects } from "@/components/providers/MotionProvider";
 import { Container } from "@/components/layout/Container";
 import { MotionSection } from "@/components/motion/MotionSection";
 import { formatEventTime, formatWeddingDate } from "@/lib/utils/dates";
@@ -46,7 +49,11 @@ export function WeddingDetailsSection({
   const isLight = variant === "light";
 
   return (
-    <Container className={className}>
+    <AmbientSection
+      variant={isLight ? "light" : "dark"}
+      className={cn("!py-0", className)}
+      contentClassName="py-[var(--section-py)]"
+    >
       <MotionSection>
         <h2
           className={cn(
@@ -56,12 +63,19 @@ export function WeddingDetailsSection({
         >
           The Celebration
         </h2>
-        <ul className="space-y-10">
+        <ul
+          className={cn(
+            "divide-y rounded-xl border",
+            isLight
+              ? "divide-charcoal/10 border-charcoal/10 bg-white/40"
+              : "divide-ivory/10 border-ivory/10 bg-ivory/[0.03]",
+          )}
+        >
           {events.map((event) => (
             <li
               key={event.id}
               className={cn(
-                "border-t pt-8 first:border-0 first:pt-0",
+                "px-5 py-8 first:pt-8 sm:px-8",
                 isLight ? "border-charcoal/10" : "border-ivory/10",
               )}
             >
@@ -117,7 +131,7 @@ export function WeddingDetailsSection({
           </div>
         )}
       </MotionSection>
-    </Container>
+    </AmbientSection>
   );
 }
 
@@ -136,7 +150,9 @@ function WeddingDetailsCard({
   invitationSlug?: string;
   inviteUrl?: string;
 }) {
+  const lite = useLiteEffects();
   const displayDate = combineDateAndTime(content.weddingDate, content.weddingTime);
+  const accentImage = content.atmosphere?.detailsAccent;
 
   return (
     <section
@@ -154,13 +170,36 @@ function WeddingDetailsCard({
         </MotionSection>
 
         <m.div
-          className="mt-12"
+          className="relative mt-12 lg:grid lg:grid-cols-[1fr,minmax(0,28rem)] lg:items-stretch lg:gap-0"
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-          <article className="relative rounded-2xl border border-gold/15 bg-white/50 p-8 shadow-sm shadow-gold/5 backdrop-blur-sm">
+          {accentImage && !lite && (
+            <div
+              className="relative hidden min-h-[20rem] overflow-hidden rounded-l-2xl lg:block"
+              aria-hidden
+            >
+              <OptimizedMedia
+                src={accentImage}
+                alt=""
+                fill
+                sizes="(max-width: 1024px) 0vw, 28vw"
+                quality={65}
+                className="scale-110 object-cover blur-sm"
+              />
+              <div className="absolute inset-0 bg-white/30" />
+            </div>
+          )}
+          <article
+            className={cn(
+              "relative rounded-2xl border border-gold/15 p-8 shadow-sm shadow-gold/5 lg:rounded-l-none",
+              lite
+                ? "bg-white/80"
+                : "glass-panel bg-white/50 backdrop-blur-sm",
+            )}
+          >
             <div
               className="absolute -left-px top-8 h-16 w-1 rounded-full bg-gradient-to-b from-[var(--theme-accent,#c9a962)] to-gold-muted/30"
               aria-hidden

@@ -62,6 +62,8 @@ export interface StoryBeat {
   year?: string;
   title: string;
   body: string;
+  image?: string;
+  imageAlt?: string;
 }
 
 export interface InvitationMedia {

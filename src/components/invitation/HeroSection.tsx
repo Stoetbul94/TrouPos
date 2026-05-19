@@ -9,7 +9,8 @@ import { CountdownTimer } from "@/components/invitation/CountdownTimer";
 import { Container } from "@/components/layout/Container";
 import { FloralParticles } from "@/components/motion/FloralParticles";
 import { MotionSection } from "@/components/motion/MotionSection";
-import { OptimizedMedia } from "@/components/media/OptimizedMedia";
+import { EditorialImage } from "@/components/cinematic/EditorialImage";
+import { CinematicOverlays } from "@/components/cinematic/CinematicOverlays";
 import { formatWeddingDate } from "@/lib/utils/dates";
 import { combineDateAndTime } from "@/lib/invitations/contentAdapter";
 import { fadeUp, heroReveal, staggerContainer } from "@/lib/animations/variants";
@@ -55,6 +56,8 @@ function HeroCinematic({
         posterSrc={content.heroPoster}
         videoSrc={content.heroVideo}
         alt={`${content.brideName} and ${content.groomName}`}
+        overlay
+        kenBurns
       />
       <div className="grain-overlay relative z-10 px-5 sm:px-8">
         <m.div
@@ -92,8 +95,12 @@ function HeroClassic({
   const displayDate = combineDateAndTime(content.weddingDate, content.weddingTime);
 
   return (
-    <header className="scroll-mt-24 border-b border-charcoal/10 bg-ivory">
-      <Container className="py-16 sm:py-24">
+    <header className="relative scroll-mt-24 border-b border-charcoal/10 bg-ivory">
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-champagne/40 to-transparent md:block"
+        aria-hidden
+      />
+      <Container className="relative py-16 sm:py-24">
         <div className="grid items-center gap-10 md:grid-cols-2">
           <MotionSection>
             <CoupleNames
@@ -112,13 +119,12 @@ function HeroClassic({
             </div>
           </MotionSection>
           {content.heroImage && (
-            <OptimizedMedia
+            <EditorialImage
               src={content.heroImage}
               alt={`${content.brideName} and ${content.groomName}`}
               aspectRatio="4/5"
               sizes="(max-width: 768px) 100vw, 50vw"
               priority
-              className="rounded-sm shadow-xl"
             />
           )}
         </div>
@@ -147,7 +153,9 @@ function HeroFloral({ content }: { content: WeddingInvitationContent }) {
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#faf6f0]/30 via-charcoal/40 to-[#1a1612]/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/50" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_20%,color-mix(in_srgb,var(--theme-accent)_25%,transparent),transparent_55%)]" />
+        <CinematicOverlays preset="hero" />
         <FloralParticles />
       </div>
 
