@@ -19,7 +19,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
+    default: `${siteConfig.name} · Luxury Digital Wedding Invitations`,
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,

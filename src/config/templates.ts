@@ -6,7 +6,8 @@ export const templateCatalog: TemplateMeta[] = [
     name: "Modern Cinematic",
     description:
       "Full-bleed visuals, dramatic reveals, and a contemporary luxury feel.",
-    previewImage: "/assets/images/template-modern.jpg",
+    previewImage:
+      "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
     tags: ["cinematic", "modern", "bold"],
   },
   {
@@ -14,7 +15,8 @@ export const templateCatalog: TemplateMeta[] = [
     name: "Classic Elegance",
     description:
       "Timeless typography, soft gold accents, and refined editorial layouts.",
-    previewImage: "/assets/images/template-classic.jpg",
+    previewImage:
+      "https://images.unsplash.com/photo-1465495976277-353ecfa9f2dd?w=800&q=80",
     tags: ["classic", "elegant", "timeless"],
   },
 ];
