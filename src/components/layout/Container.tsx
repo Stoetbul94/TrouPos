@@ -13,7 +13,7 @@ export function Container({
   return (
     <div
       className={cn(
-        "mx-auto w-full px-5 sm:px-8",
+        "mx-auto w-full max-w-[100vw] px-[var(--page-px)]",
         narrow ? "max-w-xl" : "max-w-3xl",
         className,
       )}

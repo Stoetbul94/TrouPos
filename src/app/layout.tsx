@@ -1,7 +1,8 @@
-import type { Metadata, Viewport } from "next";
+import type { Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { Providers } from "@/components/providers/Providers";
 import { siteConfig } from "@/config/site";
+import { rootMetadata } from "@/lib/seo/metadata";
 import "@/styles/globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -9,26 +10,22 @@ const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
   display: "swap",
+  preload: true,
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
+  preload: true,
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: `${siteConfig.name} · Luxury Digital Wedding Invitations`,
-    template: `%s · ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
-  metadataBase: new URL(siteConfig.baseUrl),
-};
+export const metadata = rootMetadata;
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  maximumScale: 5,
   viewportFit: "cover",
   themeColor: siteConfig.themeColor,
 };

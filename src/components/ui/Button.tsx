@@ -28,7 +28,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex min-h-11 items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium tracking-wide transition-colors duration-300 disabled:opacity-50",
+        "touch-target inline-flex min-h-12 items-center justify-center rounded-full px-6 py-3 text-sm font-medium tracking-wide transition-colors duration-300 active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100",
         variants[variant],
         fullWidth && "w-full",
         className,

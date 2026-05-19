@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { InvitationView } from "@/components/invitation/InvitationView";
 import { getInvitation, getAllInvitationSlugs } from "@/lib/invitations/getInvitation";
 import { formatWeddingDate } from "@/lib/utils/dates";
+import { env } from "@/config/env";
+import { inviteRobots } from "@/lib/seo/metadata";
 import { siteConfig } from "@/config/site";
 
 interface InvitePageProps {
@@ -26,24 +28,31 @@ export async function generateMetadata({
   const title = `${invitation.couple.partnerOne} & ${invitation.couple.partnerTwo}`;
   const description = `You're invited · ${formatWeddingDate(invitation.weddingDate)}`;
 
+  const ogImage = invitation.media.ogImage;
+
   return {
     title,
     description,
+    robots: inviteRobots(),
+    alternates: {
+      canonical: `${env.siteUrl}/invite/${slug}`,
+    },
     openGraph: {
       title,
       description,
       type: "website",
       locale: invitation.locale,
       siteName: siteConfig.name,
-      images: invitation.media.ogImage
-        ? [{ url: invitation.media.ogImage, width: 1200, height: 630, alt: title }]
+      url: `${env.siteUrl}/invite/${slug}`,
+      images: ogImage
+        ? [{ url: ogImage, width: 1200, height: 630, alt: title }]
         : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: invitation.media.ogImage ? [invitation.media.ogImage] : undefined,
+      images: ogImage ? [ogImage] : undefined,
     },
   };
 }

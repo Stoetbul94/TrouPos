@@ -47,6 +47,7 @@ export function MapEmbed({
           <div className="mb-4 flex justify-center">
             <Button
               variant={variant === "light" ? "outline" : "secondary"}
+              className="min-h-12 min-w-[10rem]"
               onClick={() => setLoaded(true)}
             >
               Load map
@@ -61,6 +62,7 @@ export function MapEmbed({
               className="h-full w-full"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
             />
           </div>
         )}

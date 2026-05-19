@@ -1,4 +1,4 @@
-import type { SectionId, TemplateId } from "./invitation";
+import type { SectionId, StoryBeat, TemplateId } from "./invitation";
 
 /**
  * Prop-driven wedding invitation content.
@@ -44,6 +44,11 @@ export interface WeddingInvitationContent {
   heroImage?: string;
   tagline?: string;
   backgroundColor?: string;
+  /** Optional love story beats (modern / classic templates) */
+  story?: StoryBeat[];
+  dressCode?: string;
+  heroVideo?: string;
+  heroPoster?: string;
 }
 
 export interface InvitationMeta {

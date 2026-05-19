@@ -1,30 +1,22 @@
-import Image from "next/image";
-import { MotionSection } from "@/components/motion/MotionSection";
-import { Container } from "@/components/layout/Container";
+import { GiftDonationSection } from "@/components/invitation/gift/GiftDonationSection";
 
+/** @deprecated QR is included in GiftDonationSection; use that or pass qrCodeImage prop */
 export function QRCodeSection({
   qrCodeImage,
   caption = "Scan to view our invitation",
+  variant = "light",
 }: {
   qrCodeImage: string;
   caption?: string;
+  variant?: "dark" | "light";
 }) {
   return (
-    <Container narrow>
-      <MotionSection className="flex flex-col items-center text-center">
-        <p className="mb-4 text-xs uppercase tracking-[0.3em] text-gold-muted">
-          {caption}
-        </p>
-        <div className="relative h-40 w-40 overflow-hidden rounded-xl border border-gold/20 bg-white p-3 shadow-lg">
-          <Image
-            src={qrCodeImage}
-            alt="Invitation QR code"
-            fill
-            className="object-contain p-2"
-            sizes="160px"
-          />
-        </div>
-      </MotionSection>
-    </Container>
+    <GiftDonationSection
+      qrCodeImage={qrCodeImage}
+      qrCaption={caption}
+      variant={variant}
+      title="Quick link"
+      message="Scan to open our digital invitation."
+    />
   );
 }

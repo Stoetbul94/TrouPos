@@ -18,7 +18,7 @@ export function RsvpSubmitButton({
       disabled={isLoading}
       whileTap={{ scale: isLoading ? 1 : 0.98 }}
       className={cn(
-        "relative flex min-h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-medium tracking-wide transition disabled:cursor-not-allowed disabled:opacity-60",
+        "touch-target relative flex min-h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-medium tracking-wide transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100",
         variant === "light"
           ? "bg-charcoal text-ivory hover:bg-charcoal/90"
           : "bg-gold text-charcoal hover:bg-gold/90 shadow-lg shadow-black/20",

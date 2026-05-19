@@ -52,7 +52,7 @@ export function MarketingNav() {
 
         <button
           type="button"
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-ivory/15 md:hidden"
+          className="touch-target flex h-12 w-12 items-center justify-center rounded-full border border-ivory/15 md:hidden"
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen(!open)}

@@ -16,7 +16,7 @@ export function Section({
     <section
       id={id}
       className={cn(
-        "py-[var(--section-py)]",
+        "scroll-mt-24 py-[var(--section-py)]",
         dark && "bg-charcoal text-ivory",
         className,
       )}

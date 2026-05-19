@@ -21,8 +21,8 @@ export function CoupleNames({
         className={cn(
           "font-display font-light leading-tight tracking-wide",
           size === "hero"
-            ? "text-4xl xs:text-5xl sm:text-6xl md:text-7xl"
-            : "text-3xl sm:text-4xl",
+            ? "text-display-fluid xs:text-5xl sm:text-6xl"
+            : "text-heading-fluid",
         )}
       >
         <span className="block">{couple.partnerOne}</span>

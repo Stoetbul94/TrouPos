@@ -6,7 +6,7 @@ import { Container } from "@/components/layout/Container";
 import { m } from "framer-motion";
 import { staggerContainer, fadeUp } from "@/lib/animations/variants";
 
-export function StoryTimeline({
+export function StorySection({
   story,
   variant = "dark",
 }: {
@@ -16,7 +16,7 @@ export function StoryTimeline({
   return (
     <Container>
       <MotionSection>
-        <h2 className="mb-12 text-center font-display text-3xl font-light sm:text-4xl">
+        <h2 className="mb-12 scroll-mt-24 text-center font-display text-3xl font-light sm:text-4xl">
           Our Story
         </h2>
         <m.ol

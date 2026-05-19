@@ -3,12 +3,14 @@ import type {
   InvitationMeta,
   WeddingInvitationContent,
 } from "@/types/invitation-content";
+import { sectionsForTemplate } from "@/lib/invitations/templateSections";
 import type {
   GalleryImage,
   GiftRegistry,
   Invitation,
   SectionId,
   TemplateId,
+  Venue,
   WeddingEvent,
 } from "@/types/invitation";
 
@@ -45,6 +47,15 @@ export function bankDetailsToGift(
     accountNumber: bank.accountNumber,
     branchCode: bank.branchCode,
     reference: bank.reference,
+  };
+}
+
+export function contentToVenue(content: WeddingInvitationContent): Venue {
+  return {
+    name: content.venueName,
+    address: content.venueAddress,
+    city: content.venueAddress.split(",").pop()?.trim() ?? "",
+    mapUrl: content.googleMapsLink,
   };
 }
 
@@ -98,6 +109,8 @@ export function contentToInvitation(
       fontDisplay: content.fontStyle,
     },
     gift: bankDetailsToGift(content.bankDetails),
+    story: content.story,
+    dressCode: content.dressCode,
   };
 }
 
@@ -193,6 +206,14 @@ export function buildMockInvitation(
 ): Invitation {
   const content = createDefaultContent({
     ...contentOverrides,
+    story:
+      contentOverrides?.story ??
+      (templateId !== "luxury-floral-gold" ? defaultStory : undefined),
+    dressCode:
+      contentOverrides?.dressCode ??
+      (templateId !== "luxury-floral-gold"
+        ? "Formal attire · Earth tones encouraged"
+        : undefined),
     galleryImages:
       contentOverrides?.galleryImages ?? defaultGalleryForTemplate(templateId),
     themeColor:
@@ -230,8 +251,6 @@ export function buildMockInvitation(
   const invitation = contentToInvitation(meta, content);
 
   if (templateId !== "luxury-floral-gold") {
-    invitation.story = defaultStory;
-    invitation.dressCode = "Formal attire · Earth tones encouraged";
     invitation.rsvpDeadline = "2026-10-01T23:59:59+02:00";
   }
 
@@ -260,14 +279,7 @@ const defaultStory = [
 ];
 
 function defaultSectionsForTemplate(templateId: TemplateId): SectionId[] {
-  switch (templateId) {
-    case "luxury-floral-gold":
-      return ["hero", "events", "venue", "gallery", "rsvp", "gift"];
-    case "classic-elegance":
-      return ["hero", "story", "events", "gallery", "dressCode", "venue", "rsvp"];
-    default:
-      return ["hero", "story", "events", "gallery", "dressCode", "venue", "rsvp"];
-  }
+  return sectionsForTemplate(templateId);
 }
 
 function themeColorForTemplate(templateId: TemplateId): string {

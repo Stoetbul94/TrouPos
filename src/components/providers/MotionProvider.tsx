@@ -2,22 +2,48 @@
 
 import { LazyMotion, domAnimation } from "framer-motion";
 import { createContext, useContext, type ReactNode } from "react";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import {
+  useDevicePerformance,
+  type DevicePerformance,
+} from "@/hooks/useDevicePerformance";
 
-const ReducedMotionContext = createContext(false);
+const PerformanceContext = createContext<DevicePerformance | null>(null);
 
-export function useMotionReduced() {
-  return useContext(ReducedMotionContext);
+/** Skip Framer scroll/page animations */
+export function useMotionReduced(): boolean {
+  const ctx = useContext(PerformanceContext);
+  return ctx?.shouldReduceAnimations ?? false;
+}
+
+/** Skip particles, video, 1s intervals — lighter media */
+export function useLiteEffects(): boolean {
+  const ctx = useContext(PerformanceContext);
+  return ctx?.shouldReduceEffects ?? false;
+}
+
+export function usePerformance(): DevicePerformance {
+  const ctx = useContext(PerformanceContext);
+  if (!ctx) {
+    return {
+      reducedMotion: false,
+      saveData: false,
+      isMobile: false,
+      isInAppBrowser: false,
+      shouldReduceAnimations: false,
+      shouldReduceEffects: false,
+    };
+  }
+  return ctx;
 }
 
 export function MotionProvider({ children }: { children: ReactNode }) {
-  const reduced = useReducedMotion();
+  const performance = useDevicePerformance();
 
   return (
-    <ReducedMotionContext.Provider value={reduced}>
+    <PerformanceContext.Provider value={performance}>
       <LazyMotion features={domAnimation} strict>
         {children}
       </LazyMotion>
-    </ReducedMotionContext.Provider>
+    </PerformanceContext.Provider>
   );
 }

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { InvitationView } from "@/components/invitation/InvitationView";
 import { getDemoInvitation } from "@/lib/invitations/getInvitation";
 import { getTemplateMeta, isValidTemplateId, templateIds } from "@/templates/registry";
+import { demoRobots } from "@/lib/seo/metadata";
 import { siteConfig } from "@/config/site";
 
 interface DemoPageProps {
@@ -24,6 +25,7 @@ export async function generateMetadata({
   return {
     title: meta ? `${meta.name} Demo` : "Template Demo",
     description: meta?.description ?? siteConfig.description,
+    robots: demoRobots(),
   };
 }
 

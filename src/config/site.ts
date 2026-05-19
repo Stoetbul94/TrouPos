@@ -1,8 +1,12 @@
+import { env, getSiteUrl } from "@/config/env";
+
 export const siteConfig = {
-  name: "Trou",
+  name: env.siteName,
   description: "Premium cinematic digital wedding invitations for South Africa",
   locale: "en-ZA",
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000",
+  get baseUrl() {
+    return getSiteUrl();
+  },
   themeColor: "#1a1612",
   whatsappDefaultMessage: "You're invited to our wedding!",
 } as const;

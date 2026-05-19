@@ -32,6 +32,8 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -44,14 +46,51 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   padding-top: var(--safe-top);
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+}
+
+/* Invitation pages: room for sticky RSVP + smooth anchor scroll */
+.invite-shell {
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  padding-bottom: var(--invite-footer-pad);
+  -webkit-overflow-scrolling: touch;
 }
 
 .font-display {
   font-family: var(--font-display);
+}
+
+/* Fluid display headings */
+.text-display-fluid {
+  font-size: var(--text-display);
+  line-height: 1.1;
+}
+
+.text-heading-fluid {
+  font-size: var(--text-heading);
+  line-height: 1.2;
+}
+
+/* Touch-friendly interactive elements */
+.touch-target {
+  min-height: var(--touch-min);
+  min-width: var(--touch-min);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .grain-overlay::after {
@@ -61,6 +100,12 @@ body {
   inset: 0;
   opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay::after {
+    display: none;
+  }
 }
 
 .invite-classic {
@@ -77,7 +122,14 @@ body {
   background: #faf6f0;
 }
 
-/* Dynamic theme tokens (set via InvitationThemeProvider) */
 [style*="--theme-accent"] {
   --color-gold: var(--theme-accent, var(--color-gold));
+}
+
+/* Reduce backdrop blur cost on mobile GPUs */
+@media (max-width: 767px) {
+  .mobile-blur-light {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 }

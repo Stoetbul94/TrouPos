@@ -1,7 +1,7 @@
 "use client";
 
 import { OptimizedMedia } from "./OptimizedMedia";
-import { useMotionReduced } from "@/components/providers/MotionProvider";
+import { useLiteEffects, useMotionReduced } from "@/components/providers/MotionProvider";
 import { cn } from "@/lib/utils/cn";
 
 export function CinematicBackground({
@@ -20,7 +20,8 @@ export function CinematicBackground({
   overlay?: boolean;
 }) {
   const reduced = useMotionReduced();
-  const showVideo = videoSrc && !reduced;
+  const lite = useLiteEffects();
+  const showVideo = videoSrc && !reduced && !lite;
 
   return (
     <div className={cn("absolute inset-0 overflow-hidden", className)}>
@@ -31,6 +32,7 @@ export function CinematicBackground({
           muted
           loop
           playsInline
+          preload="metadata"
           poster={posterSrc ?? imageSrc}
         >
           <source src={videoSrc} type="video/mp4" />
@@ -42,6 +44,7 @@ export function CinematicBackground({
           fill
           priority
           sizes="100vw"
+          quality={lite ? 65 : 75}
           className="h-full w-full"
         />
       ) : (
