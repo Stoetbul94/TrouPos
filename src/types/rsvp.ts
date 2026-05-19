@@ -24,6 +24,15 @@ export interface RsvpResult {
   error?: string;
 }
 
-export interface RsvpDraft extends Partial<RsvpPayload> {
+/** Premium RSVP form draft fields (stored alongside legacy payload fields). */
+export interface PremiumRsvpDraftFields {
+  fullName?: string;
+  attending?: "yes" | "no";
+  guestCount?: number;
+  dietaryRequirements?: string;
+  personalMessage?: string;
+}
+
+export interface RsvpDraft extends Partial<RsvpPayload>, PremiumRsvpDraftFields {
   savedAt: string;
 }

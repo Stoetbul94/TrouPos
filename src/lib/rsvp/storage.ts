@@ -1,4 +1,5 @@
 import type { RsvpDraft } from "@/types/rsvp";
+import type { PremiumRsvpFormValues } from "./premiumSchema";
 
 const PREFIX = "trou-rsvp-draft:";
 
@@ -6,7 +7,9 @@ function key(slug: string) {
   return `${PREFIX}${slug}`;
 }
 
-export function saveRsvpDraft(slug: string, draft: Omit<RsvpDraft, "savedAt">) {
+type RsvpDraftInput = Omit<RsvpDraft, "savedAt"> | Omit<PremiumRsvpFormValues, "invitationSlug">;
+
+export function saveRsvpDraft(slug: string, draft: RsvpDraftInput) {
   if (typeof window === "undefined") return;
   try {
     const payload: RsvpDraft = { ...draft, savedAt: new Date().toISOString() };
