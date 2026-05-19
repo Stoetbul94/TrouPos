@@ -82,6 +82,8 @@ export interface Invitation {
   id: string;
   slug: string;
   templateId: TemplateId;
+  /** Prop-driven content — source of truth for dynamic templates */
+  content?: import("./invitation-content").WeddingInvitationContent;
   couple: Couple;
   weddingDate: string;
   timezone: string;

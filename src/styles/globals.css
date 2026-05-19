@@ -76,3 +76,8 @@ body {
   color: var(--color-charcoal);
   background: #faf6f0;
 }
+
+/* Dynamic theme tokens (set via InvitationThemeProvider) */
+[style*="--theme-accent"] {
+  --color-gold: var(--theme-accent, var(--color-gold));
+}

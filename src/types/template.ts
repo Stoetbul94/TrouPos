@@ -1,9 +1,9 @@
 import type { ComponentType } from "react";
-import type { Invitation, SectionId, TemplateId } from "./invitation";
+import type { DynamicInvitationProps } from "./invitation-content";
+import type { SectionId, TemplateId } from "./invitation";
 
-export interface InvitationTemplateProps {
-  invitation: Invitation;
-}
+/** All templates receive prop-driven content + runtime meta */
+export type InvitationTemplateProps = DynamicInvitationProps;
 
 export type TemplateComponent = ComponentType<InvitationTemplateProps>;
 

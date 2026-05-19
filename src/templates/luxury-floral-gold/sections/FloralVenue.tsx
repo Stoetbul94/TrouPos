@@ -1,13 +1,19 @@
 "use client";
 
-import type { Invitation } from "@/types/invitation";
+import type { WeddingInvitationContent } from "@/types/invitation-content";
 import { MapEmbed } from "@/components/invitation/MapEmbed";
 import { Container } from "@/components/layout/Container";
 import { FloralSectionReveal } from "./FloralSectionReveal";
 
-export function FloralVenue({ invitation }: { invitation: Invitation }) {
-  const venue = invitation.events[0]?.venue;
-  if (!venue) return null;
+export function FloralVenue({ content }: { content: WeddingInvitationContent }) {
+  if (!content.googleMapsLink) return null;
+
+  const venue = {
+    name: content.venueName,
+    address: content.venueAddress,
+    city: "",
+    mapUrl: content.googleMapsLink,
+  };
 
   return (
     <section id="venue" className="scroll-mt-24 py-[var(--section-py)]">

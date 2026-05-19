@@ -1,28 +1,36 @@
 import type { Invitation } from "@/types/invitation";
+import type { WeddingInvitationContent } from "@/types/invitation-content";
+import { combineDateAndTime } from "@/lib/invitations/contentAdapter";
 import { buildGoogleCalendarUrl } from "@/lib/utils/urls";
 import { formatWeddingDate } from "@/lib/utils/dates";
 import { cn } from "@/lib/utils/cn";
 
-export function AddToCalendarButton({
-  invitation,
-  className,
-  variant = "dark",
-}: {
-  invitation: Invitation;
+type CalendarProps = {
   className?: string;
   variant?: "dark" | "light";
-}) {
-  const ceremony = invitation.events[0];
-  if (!ceremony) return null;
+};
 
-  const title = `${invitation.couple.partnerOne} & ${invitation.couple.partnerTwo} Wedding`;
-  const location = `${ceremony.venue.name}, ${ceremony.venue.address}, ${ceremony.venue.city}`;
+export function AddToCalendarButton({
+  invitation,
+  content,
+  className,
+  variant = "dark",
+}: CalendarProps &
+  ({ invitation: Invitation; content?: never } | { content: WeddingInvitationContent; invitation?: never })) {
+  const calendarContent = content ?? (invitation ? invitationContentFromLegacy(invitation) : null);
+  if (!calendarContent) return null;
+
+  const startsAt = combineDateAndTime(
+    calendarContent.weddingDate,
+    calendarContent.weddingTime,
+  );
+  const title = `${calendarContent.brideName} & ${calendarContent.groomName} Wedding`;
+  const location = `${calendarContent.venueName}, ${calendarContent.venueAddress}`;
   const href = buildGoogleCalendarUrl({
     title,
-    start: ceremony.startsAt,
-    end: ceremony.endsAt,
+    start: startsAt,
     location,
-    details: `Wedding celebration — ${formatWeddingDate(invitation.weddingDate)}`,
+    details: `Wedding celebration — ${formatWeddingDate(startsAt)}`,
   });
 
   return (
@@ -41,4 +49,22 @@ export function AddToCalendarButton({
       Add to calendar
     </a>
   );
+}
+
+function invitationContentFromLegacy(
+  invitation: Invitation,
+): WeddingInvitationContent {
+  const event = invitation.events[0];
+  return {
+    brideName: invitation.couple.partnerOne,
+    groomName: invitation.couple.partnerTwo,
+    weddingDate: invitation.weddingDate,
+    weddingTime: "14:00",
+    venueName: event?.venue.name ?? "",
+    venueAddress: event?.venue.address ?? "",
+    googleMapsLink: event?.venue.mapUrl ?? "",
+    countdownDate: invitation.weddingDate,
+    galleryImages: [],
+    themeColor: invitation.theme?.accentColor ?? "#c9a962",
+  };
 }
