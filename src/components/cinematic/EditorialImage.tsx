@@ -2,6 +2,7 @@
 
 import { OptimizedMedia } from "@/components/media/OptimizedMedia";
 import { cn } from "@/lib/utils/cn";
+import { CinematicOverlays } from "./CinematicOverlays";
 
 export function EditorialImage({
   src,
@@ -38,7 +39,7 @@ export function EditorialImage({
         quality={quality}
         className={imageClassName}
       />
-      <div className="cinematic-vignette pointer-events-none absolute inset-0" aria-hidden />
+      <CinematicOverlays preset="vignette" />
     </div>
   );
 }

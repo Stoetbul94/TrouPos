@@ -20,6 +20,7 @@ export function InvitationShell({
 
   return (
     <div
+      data-lite={lite ? "" : undefined}
       className={cn(
         "invite-shell relative min-h-dvh overflow-x-hidden",
         variant === "light" && "invite-classic bg-ivory text-charcoal",

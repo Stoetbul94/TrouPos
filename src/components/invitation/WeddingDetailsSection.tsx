@@ -6,6 +6,7 @@ import { AmbientSection } from "@/components/cinematic/AmbientSection";
 import { AddToCalendar } from "@/components/invitation/calendar";
 import { OptimizedMedia } from "@/components/media/OptimizedMedia";
 import { useLiteEffects } from "@/components/providers/MotionProvider";
+import { EditorialGrid } from "@/components/layout/EditorialGrid";
 import { Container } from "@/components/layout/Container";
 import { MotionSection } from "@/components/motion/MotionSection";
 import { formatEventTime, formatWeddingDate } from "@/lib/utils/dates";
@@ -45,83 +46,110 @@ export function WeddingDetailsSection({
     );
   }
 
+  const lite = useLiteEffects();
   const events = contentToEvents(content);
   const isLight = variant === "light";
+  const accentImage = content.atmosphere?.detailsAccent;
+
+  const eventsList = (
+    <ul
+      className={cn(
+        "divide-y rounded-xl border",
+        isLight
+          ? "divide-charcoal/10 border-charcoal/10 bg-white/40"
+          : "divide-ivory/10 border-ivory/10 bg-ivory/[0.03]",
+      )}
+    >
+      {events.map((event) => (
+        <li
+          key={event.id}
+          className={cn("px-5 py-8 first:pt-8 sm:px-8 lg:px-10")}
+        >
+          <p className="type-eyebrow">{formatWeddingDate(event.startsAt, "d MMMM yyyy")}</p>
+          <h3
+            className={cn(
+              "type-deck mt-2",
+              isLight ? "text-charcoal" : "text-ivory",
+            )}
+          >
+            {event.title}
+          </h3>
+          <p
+            className={cn(
+              "mt-1 text-sm",
+              isLight ? "text-charcoal/70" : "text-ivory/70",
+            )}
+          >
+            {formatEventTime(event.startsAt)}
+            {event.endsAt && ` – ${formatEventTime(event.endsAt)}`}
+          </p>
+          <p
+            className={cn(
+              "mt-3 font-medium",
+              isLight ? "text-charcoal" : "text-ivory",
+            )}
+          >
+            {event.venue.name}
+          </p>
+          <p
+            className={cn(
+              "text-sm",
+              isLight ? "text-charcoal/60" : "text-ivory/60",
+            )}
+          >
+            {event.venue.address}
+            {event.venue.city && `, ${event.venue.city}`}
+            {event.venue.province && `, ${event.venue.province}`}
+          </p>
+        </li>
+      ))}
+    </ul>
+  );
+
+  const accentAside =
+    accentImage && !lite ? (
+      <div
+        className="relative hidden min-h-[18rem] overflow-hidden rounded-2xl lg:block"
+        aria-hidden
+      >
+        <OptimizedMedia
+          src={accentImage}
+          alt=""
+          fill
+          sizes="(max-width: 1024px) 0vw, 35vw"
+          quality={65}
+          className="scale-110 object-cover blur-sm"
+        />
+        <div
+          className={cn(
+            "absolute inset-0",
+            isLight ? "bg-white/25" : "bg-charcoal/40",
+          )}
+        />
+      </div>
+    ) : undefined;
 
   return (
     <AmbientSection
       variant={isLight ? "light" : "dark"}
+      containerWidth="editorial"
       className={cn("!py-0", className)}
-      contentClassName="py-[var(--section-py)]"
+      contentClassName="py-[var(--section-py)] lg:py-[var(--section-py-lg)]"
     >
-      <MotionSection>
+      <MotionSection variant="revealSoft">
         <h2
           className={cn(
-            "mb-10 scroll-mt-24 text-center font-display text-3xl font-light tracking-wide sm:text-4xl",
+            "type-section-title mb-10 text-center lg:mb-14",
             isLight ? "text-charcoal" : "text-ivory",
           )}
         >
           The Celebration
         </h2>
-        <ul
-          className={cn(
-            "divide-y rounded-xl border",
-            isLight
-              ? "divide-charcoal/10 border-charcoal/10 bg-white/40"
-              : "divide-ivory/10 border-ivory/10 bg-ivory/[0.03]",
-          )}
-        >
-          {events.map((event) => (
-            <li
-              key={event.id}
-              className={cn(
-                "px-5 py-8 first:pt-8 sm:px-8",
-                isLight ? "border-charcoal/10" : "border-ivory/10",
-              )}
-            >
-              <p className="text-xs uppercase tracking-[0.25em] text-gold">
-                {formatWeddingDate(event.startsAt, "d MMMM yyyy")}
-              </p>
-              <h3
-                className={cn(
-                  "mt-2 font-display text-2xl",
-                  isLight ? "text-charcoal" : "text-ivory",
-                )}
-              >
-                {event.title}
-              </h3>
-              <p
-                className={cn(
-                  "mt-1 text-sm",
-                  isLight ? "text-charcoal/70" : "text-ivory/70",
-                )}
-              >
-                {formatEventTime(event.startsAt)}
-                {event.endsAt && ` – ${formatEventTime(event.endsAt)}`}
-              </p>
-              <p
-                className={cn(
-                  "mt-3 font-medium",
-                  isLight ? "text-charcoal" : "text-ivory",
-                )}
-              >
-                {event.venue.name}
-              </p>
-              <p
-                className={cn(
-                  "text-sm",
-                  isLight ? "text-charcoal/60" : "text-ivory/60",
-                )}
-              >
-                {event.venue.address}
-                {event.venue.city && `, ${event.venue.city}`}
-                {event.venue.province && `, ${event.venue.province}`}
-              </p>
-            </li>
-          ))}
-        </ul>
+        <EditorialGrid aside={accentAside} asidePosition="right">
+          {eventsList}
+        </EditorialGrid>
         {showCalendar && (
-          <div className="mt-10 flex justify-center px-4">
+          <div className="mt-10 flex justify-center px-4 lg:mt-14">
             <AddToCalendar
               content={content}
               variant={variant}
@@ -157,16 +185,15 @@ function WeddingDetailsCard({
   return (
     <section
       id="details"
-      className={cn("scroll-mt-24 py-[var(--section-py)]", className)}
+      className={cn(
+        "scroll-mt-24 py-[var(--section-py)] lg:py-[var(--section-py-lg)]",
+        className,
+      )}
     >
-      <Container>
-        <MotionSection className="text-center">
-          <p className="text-xs uppercase tracking-[0.35em] text-gold-muted">
-            Wedding details
-          </p>
-          <h2 className="mt-3 font-display text-3xl font-light text-charcoal sm:text-4xl">
-            The celebration
-          </h2>
+      <Container width="editorial">
+        <MotionSection variant="revealSoft" className="text-center">
+          <p className="type-eyebrow text-gold-muted">Wedding details</p>
+          <h2 className="type-section-title mt-3 text-charcoal">The celebration</h2>
         </MotionSection>
 
         <m.div

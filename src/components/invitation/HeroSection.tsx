@@ -7,14 +7,20 @@ import { CinematicBackground } from "@/components/media/CinematicBackground";
 import { CoupleNames } from "@/components/invitation/CoupleNames";
 import { CountdownTimer } from "@/components/invitation/CountdownTimer";
 import { Container } from "@/components/layout/Container";
+import { EditorialGrid } from "@/components/layout/EditorialGrid";
 import { FloralParticles } from "@/components/motion/FloralParticles";
 import { MotionSection } from "@/components/motion/MotionSection";
+import { ParallaxLayer } from "@/components/motion/ParallaxLayer";
 import { EditorialImage } from "@/components/cinematic/EditorialImage";
 import { CinematicOverlays } from "@/components/cinematic/CinematicOverlays";
+import { GrainLayer } from "@/components/cinematic/GrainLayer";
+import { useMotionReduced } from "@/components/providers/MotionProvider";
+import { useSectionParallax } from "@/hooks/useSectionParallax";
 import { formatWeddingDate } from "@/lib/utils/dates";
 import { combineDateAndTime } from "@/lib/invitations/contentAdapter";
-import { fadeUp, heroReveal, staggerContainer } from "@/lib/animations/variants";
-import { useMotionReduced } from "@/components/providers/MotionProvider";
+import { fadeUp, heroReveal, revealEditorial, staggerContainer } from "@/lib/animations/variants";
+import { cn } from "@/lib/utils/cn";
+
 export type HeroSectionVariant = "cinematic" | "classic" | "floral";
 
 const FLORAL_HERO_FALLBACK =
@@ -46,11 +52,40 @@ function HeroCinematic({
   theme: "dark" | "light";
 }) {
   const reduced = useMotionReduced();
+  const { enabled: parallaxEnabled } = useSectionParallax();
   const textClass = theme === "light" ? "text-charcoal" : "text-ivory";
   const displayDate = combineDateAndTime(content.weddingDate, content.weddingTime);
 
+  const foreground = (
+    <m.div
+      initial={reduced ? false : "hidden"}
+      animate="visible"
+      variants={heroReveal}
+      className={cn("max-w-xl lg:max-w-2xl", textClass)}
+    >
+      <CoupleNames
+        couple={{
+          partnerOne: content.brideName,
+          partnerTwo: content.groomName,
+          tagline: content.tagline ?? content.welcomeMessage,
+        }}
+      />
+      <p className="type-eyebrow mt-8 text-center lg:text-left">
+        {formatWeddingDate(displayDate)}
+      </p>
+      <div
+        className={cn(
+          "mt-10 rounded-xl px-4 py-6 lg:inline-block lg:px-8",
+          theme === "light" ? "bg-white/40" : "glass-panel",
+        )}
+      >
+        <CountdownTimer targetDate={content.countdownDate} theme={theme} />
+      </div>
+    </m.div>
+  );
+
   return (
-    <header className="relative flex min-h-dvh flex-col justify-end pb-24 pt-32">
+    <header className="relative flex min-h-dvh flex-col justify-end pb-24 pt-32 lg:min-h-[92vh] lg:pb-28">
       <CinematicBackground
         imageSrc={content.heroImage}
         posterSrc={content.heroPoster}
@@ -59,28 +94,16 @@ function HeroCinematic({
         overlay
         kenBurns
       />
-      <div className="grain-overlay relative z-10 px-5 sm:px-8">
-        <m.div
-          initial={reduced ? false : "hidden"}
-          animate="visible"
-          variants={heroReveal}
-          className={textClass}
-        >
-          <CoupleNames
-            couple={{
-              partnerOne: content.brideName,
-              partnerTwo: content.groomName,
-              tagline: content.tagline ?? content.welcomeMessage,
-            }}
-          />
-          <p className="mt-8 text-center text-sm uppercase tracking-[0.35em] text-gold">
-            {formatWeddingDate(displayDate)}
-          </p>
-          <div className="mt-10">
-            <CountdownTimer targetDate={content.countdownDate} theme={theme} />
-          </div>
-        </m.div>
-      </div>
+      <GrainLayer intensity="hero" />
+      <Container width="wide" className="relative z-10">
+        <EditorialGrid className="items-end pb-4">
+          {parallaxEnabled ? (
+            <ParallaxLayer offset={24}>{foreground}</ParallaxLayer>
+          ) : (
+            foreground
+          )}
+        </EditorialGrid>
+      </Container>
     </header>
   );
 }
@@ -92,42 +115,57 @@ function HeroClassic({
   content: WeddingInvitationContent;
   theme: "dark" | "light";
 }) {
+  const reduced = useMotionReduced();
   const displayDate = combineDateAndTime(content.weddingDate, content.weddingTime);
 
   return (
     <header className="relative scroll-mt-24 border-b border-charcoal/10 bg-ivory">
       <div
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-champagne/40 to-transparent md:block"
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-champagne/40 to-transparent lg:block"
         aria-hidden
       />
-      <Container className="relative py-16 sm:py-24">
-        <div className="grid items-center gap-10 md:grid-cols-2">
-          <MotionSection>
+      <Container width="wide" className="relative py-16 sm:py-24 lg:py-[var(--section-py-lg)]">
+        <EditorialGrid
+          className="items-center gap-10 lg:gap-16"
+          aside={
+            content.heroImage ? (
+              <m.div
+                initial={reduced ? false : "hidden"}
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                variants={revealEditorial}
+                className="lg:min-h-[70vh] lg:flex lg:items-center"
+              >
+                <EditorialImage
+                  src={content.heroImage}
+                  alt={`${content.brideName} and ${content.groomName}`}
+                  aspectRatio="4/5"
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  priority
+                  className="w-full"
+                />
+              </m.div>
+            ) : undefined
+          }
+          asidePosition="right"
+        >
+          <MotionSection variant="revealSoft">
             <CoupleNames
               couple={{
                 partnerOne: content.brideName,
                 partnerTwo: content.groomName,
                 tagline: content.welcomeMessage ?? content.tagline,
               }}
-              className="text-charcoal [&_p]:text-charcoal/60 [&_span]:text-[var(--theme-accent,#b8956a)]"
+              className="text-charcoal md:text-left [&_p]:text-charcoal/60 [&_span]:text-[var(--theme-accent,#b8956a)]"
             />
-            <p className="mt-6 text-center text-xs uppercase tracking-[0.35em] text-gold-muted md:text-left">
+            <p className="type-eyebrow mt-6 text-center text-gold-muted md:text-left">
               {formatWeddingDate(displayDate)}
             </p>
             <div className="mt-8 text-charcoal [&_p]:text-charcoal/50">
               <CountdownTimer targetDate={content.countdownDate} theme={theme} />
             </div>
           </MotionSection>
-          {content.heroImage && (
-            <EditorialImage
-              src={content.heroImage}
-              alt={`${content.brideName} and ${content.groomName}`}
-              aspectRatio="4/5"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-            />
-          )}
-        </div>
+        </EditorialGrid>
       </Container>
     </header>
   );
@@ -139,7 +177,7 @@ function HeroFloral({ content }: { content: WeddingInvitationContent }) {
   const displayDate = combineDateAndTime(content.weddingDate, content.weddingTime);
 
   return (
-    <header className="relative flex min-h-dvh flex-col justify-end overflow-hidden pb-20 pt-28">
+    <header className="relative flex min-h-dvh flex-col justify-end overflow-hidden pb-20 pt-28 lg:min-h-[92vh]">
       <div className="absolute inset-0">
         <Image
           src={heroImage}
@@ -156,19 +194,17 @@ function HeroFloral({ content }: { content: WeddingInvitationContent }) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/50" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_20%,color-mix(in_srgb,var(--theme-accent)_25%,transparent),transparent_55%)]" />
         <CinematicOverlays preset="hero" />
+        <GrainLayer intensity="hero" />
         <FloralParticles />
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-3xl px-5 text-center sm:px-8">
+      <Container width="editorial" className="relative z-10 text-center">
         <m.div
           variants={staggerContainer}
           initial={reduced ? false : "hidden"}
           animate="visible"
         >
-          <m.p
-            variants={fadeUp}
-            className="text-xs font-medium uppercase tracking-[0.4em] text-[var(--theme-accent,#c9a962)]"
-          >
+          <m.p variants={fadeUp} className="type-eyebrow text-[var(--theme-accent,#c9a962)]">
             {content.welcomeMessage ?? "You are invited"}
           </m.p>
           <m.div variants={heroReveal} className="mt-6 text-ivory">
@@ -181,10 +217,7 @@ function HeroFloral({ content }: { content: WeddingInvitationContent }) {
               className="[&_p]:text-ivory/75 [&_span]:text-[var(--theme-accent,#c9a962)]"
             />
           </m.div>
-          <m.p
-            variants={fadeUp}
-            className="mt-8 text-sm uppercase tracking-[0.35em] text-champagne/90"
-          >
+          <m.p variants={fadeUp} className="type-eyebrow mt-8 text-champagne/90">
             {formatWeddingDate(displayDate)}
             <span className="mt-1 block text-xs tracking-[0.25em] text-ivory/60">
               {content.weddingTime}
@@ -194,7 +227,7 @@ function HeroFloral({ content }: { content: WeddingInvitationContent }) {
             <CountdownTimer targetDate={content.countdownDate} theme="dark" />
           </m.div>
         </m.div>
-      </div>
+      </Container>
 
       <m.a
         href="#details"

@@ -3,7 +3,7 @@
 import { m, useScroll, useTransform } from "framer-motion";
 import type { ReactNode } from "react";
 import { useRef } from "react";
-import { useMotionReduced } from "@/components/providers/MotionProvider";
+import { useLiteEffects, useMotionReduced } from "@/components/providers/MotionProvider";
 import { cn } from "@/lib/utils/cn";
 
 export function ParallaxLayer({
@@ -16,6 +16,7 @@ export function ParallaxLayer({
   className?: string;
 }) {
   const reduced = useMotionReduced();
+  const lite = useLiteEffects();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -23,7 +24,7 @@ export function ParallaxLayer({
   });
   const y = useTransform(scrollYProgress, [0, 1], [offset, -offset]);
 
-  if (reduced) {
+  if (reduced || lite) {
     return <div className={className}>{children}</div>;
   }
 

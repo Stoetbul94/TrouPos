@@ -40,4 +40,7 @@
   );
   --layer-blur: 0px;
   --section-gap-band: clamp(1.5rem, 4vw, 3rem);
+  --section-py-lg: clamp(5rem, 8vw, 10rem);
+  --page-px-lg: clamp(2rem, 5vw, 4rem);
+  --chapter-gap: clamp(2rem, 6vw, 5rem);
 }

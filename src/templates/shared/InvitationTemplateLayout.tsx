@@ -144,6 +144,7 @@ export function InvitationTemplateLayout({
               <VenueMap
                 content={content}
                 variant={uiVariant}
+                ambienceImage={atmosphere?.venueAmbience}
                 showHeading={heroVariant === "floral"}
                 className={
                   heroVariant !== "floral"

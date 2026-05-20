@@ -8,7 +8,7 @@ export function FloralParticles() {
   const lite = useLiteEffects();
   const { isMobile } = usePerformance();
 
-  const petalCount = lite ? 0 : isMobile ? 6 : 12;
+  const petalCount = lite ? 0 : isMobile ? 6 : 8;
 
   const petals = useMemo(
     () =>

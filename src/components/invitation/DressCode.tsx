@@ -29,7 +29,7 @@ export function DressCode({
           variant === "light" && lite && "border-charcoal/10 bg-white/80",
         )}
       >
-        <p className="text-xs uppercase tracking-[0.3em] text-gold">Dress Code</p>
+        <p className="type-eyebrow">Dress Code</p>
         <p className="mt-4 font-display text-xl leading-relaxed sm:text-2xl">
           {dressCode}
         </p>

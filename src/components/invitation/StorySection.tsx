@@ -5,7 +5,7 @@ import { AmbientSection } from "@/components/cinematic/AmbientSection";
 import { EditorialImage } from "@/components/cinematic/EditorialImage";
 import { MotionSection } from "@/components/motion/MotionSection";
 import { m } from "framer-motion";
-import { staggerContainer, fadeUp } from "@/lib/animations/variants";
+import { staggerChapter, fadeUp } from "@/lib/animations/variants";
 import { cn } from "@/lib/utils/cn";
 
 export function StorySection({
@@ -22,19 +22,20 @@ export function StorySection({
       backgroundImage={ambienceImage}
       variant={variant === "light" ? "light" : "dark"}
       overlay="none"
+      containerWidth="editorial"
       className="!py-0"
-      contentClassName="py-[var(--section-py)]"
+      contentClassName="py-[var(--section-py)] lg:py-[var(--section-py-lg)]"
     >
-      <MotionSection>
-        <h2 className="mb-12 scroll-mt-24 text-center font-display text-3xl font-light sm:text-4xl">
+      <MotionSection variant="revealSoft">
+        <h2 className="type-section-title mb-12 text-center lg:mb-16">
           Our Story
         </h2>
         <m.ol
-          className="relative space-y-12 border-l border-gold/30 pl-8"
-          variants={staggerContainer}
+          className="relative space-y-12 lg:space-y-[var(--chapter-gap)]"
+          variants={staggerChapter}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
         >
           {story.map((beat, index) => (
             <m.li key={beat.id} variants={fadeUp} className="relative">
@@ -43,48 +44,64 @@ export function StorySection({
                   ·
                 </span>
               )}
-              <div
-                className={cn(
-                  beat.image && "grid gap-6 sm:grid-cols-2 sm:items-center sm:gap-10",
-                  beat.image && index % 2 === 1 && "[&>*:first-child]:sm:order-2",
-                )}
-              >
-                {beat.image && (
-                  <EditorialImage
-                    src={beat.image}
-                    alt={beat.imageAlt ?? beat.title}
-                    aspectRatio="4/3"
-                    sizes="(max-width: 640px) 100vw, 40vw"
-                  />
-                )}
-                <div>
-                  {beat.year && (
-                    <p className="text-xs uppercase tracking-[0.25em] text-gold">
-                      {beat.year}
-                    </p>
+              {beat.image ? (
+                <div
+                  className={cn(
+                    "grid gap-6 lg:grid-cols-12 lg:items-center lg:gap-10",
+                    index % 2 === 1 && "lg:[&>*:first-child]:order-2",
                   )}
-                  <h3
-                    className={cn(
-                      "mt-1 font-display text-xl",
-                      variant === "light" ? "text-charcoal" : "",
-                    )}
-                  >
-                    {beat.title}
-                  </h3>
-                  <p
-                    className={cn(
-                      "mt-2 text-sm leading-relaxed",
-                      variant === "light" ? "text-charcoal/70" : "text-ivory/65",
-                    )}
-                  >
-                    {beat.body}
-                  </p>
+                >
+                  <div className="lg:col-span-5">
+                    <EditorialImage
+                      src={beat.image}
+                      alt={beat.imageAlt ?? beat.title}
+                      aspectRatio="4/3"
+                      sizes="(max-width: 1024px) 100vw, 40vw"
+                    />
+                  </div>
+                  <div className="lg:col-span-7">
+                    <StoryBeatCopy beat={beat} variant={variant} />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="mx-auto max-w-2xl lg:max-w-3xl">
+                  <StoryBeatCopy beat={beat} variant={variant} />
+                </div>
+              )}
             </m.li>
           ))}
         </m.ol>
       </MotionSection>
     </AmbientSection>
+  );
+}
+
+function StoryBeatCopy({
+  beat,
+  variant,
+}: {
+  beat: StoryBeat;
+  variant: "dark" | "light";
+}) {
+  return (
+    <>
+      {beat.year && <p className="type-eyebrow">{beat.year}</p>}
+      <h3
+        className={cn(
+          "type-deck mt-1",
+          variant === "light" ? "text-charcoal" : "text-ivory",
+        )}
+      >
+        {beat.title}
+      </h3>
+      <p
+        className={cn(
+          "mt-2 text-sm leading-relaxed lg:text-base",
+          variant === "light" ? "text-charcoal/70" : "text-ivory/65",
+        )}
+      >
+        {beat.body}
+      </p>
+    </>
   );
 }

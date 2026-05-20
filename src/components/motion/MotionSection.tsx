@@ -2,7 +2,10 @@
 
 import { m } from "framer-motion";
 import type { ReactNode } from "react";
-import { fadeUp } from "@/lib/animations/variants";
+import {
+  getRevealVariant,
+  type MotionRevealVariant,
+} from "@/lib/animations/variants";
 import { defaultViewport } from "@/lib/animations/viewport";
 import { useMotionReduced } from "@/components/providers/MotionProvider";
 import { cn } from "@/lib/utils/cn";
@@ -10,9 +13,11 @@ import { cn } from "@/lib/utils/cn";
 export function MotionSection({
   children,
   className,
+  variant = "fadeUp",
 }: {
   children: ReactNode;
   className?: string;
+  variant?: MotionRevealVariant;
 }) {
   const reduced = useMotionReduced();
 
@@ -20,13 +25,15 @@ export function MotionSection({
     return <div className={className}>{children}</div>;
   }
 
+  const motionVariant = getRevealVariant(variant);
+
   return (
     <m.div
       className={cn(className)}
       initial="hidden"
       whileInView="visible"
       viewport={defaultViewport}
-      variants={fadeUp}
+      variants={motionVariant}
     >
       {children}
     </m.div>

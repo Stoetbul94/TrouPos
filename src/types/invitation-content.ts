@@ -54,6 +54,8 @@ export interface WeddingInvitationContent {
     quoteBackground?: string;
     detailsAccent?: string;
     storyAmbience?: string;
+    galleryWash?: string;
+    venueAmbience?: string;
   };
 }
 

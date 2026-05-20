@@ -13,9 +13,7 @@ export function CoupleNames({
   return (
     <div className={cn("text-center", className)}>
       {couple.tagline && (
-        <p className="mb-3 text-xs uppercase tracking-[0.35em] text-ivory/70">
-          {couple.tagline}
-        </p>
+        <p className="type-eyebrow mb-3 text-ivory/70">{couple.tagline}</p>
       )}
       <h1
         className={cn(

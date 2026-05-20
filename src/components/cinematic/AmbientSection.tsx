@@ -15,7 +15,9 @@ export function AmbientSection({
   variant = "dark",
   className,
   contentClassName,
+  containerWidth = "prose",
   overlay = "none",
+  id,
 }: {
   children: React.ReactNode;
   backgroundImage?: string;
@@ -23,7 +25,9 @@ export function AmbientSection({
   variant?: AmbientVariant;
   className?: string;
   contentClassName?: string;
+  containerWidth?: import("@/components/layout/Container").ContainerWidth;
   overlay?: "sectionDark" | "sectionLight" | "none";
+  id?: string;
 }) {
   const lite = useLiteEffects();
   const resolvedOverlay =
@@ -37,8 +41,9 @@ export function AmbientSection({
 
   return (
     <section
+      id={id}
       className={cn(
-        "relative isolate py-[var(--section-py)]",
+        "relative isolate py-[var(--section-py)] lg:py-[var(--section-py-lg)]",
         variant === "elevated" && "bg-charcoal/95",
         variant === "light" && !backgroundImage && "bg-[#faf8f5]",
         variant === "dark" && !backgroundImage && "bg-charcoal",
@@ -67,7 +72,10 @@ export function AmbientSection({
           )}
         </div>
       )}
-      <Container className={cn("relative z-10", contentClassName)}>
+      <Container
+        width={containerWidth}
+        className={cn("relative z-10", contentClassName)}
+      >
         {children}
       </Container>
     </section>

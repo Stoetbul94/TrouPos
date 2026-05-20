@@ -160,6 +160,8 @@ export function invitationToContent(invitation: Invitation): WeddingInvitationCo
     heroImage: invitation.media.heroImage,
     tagline: invitation.couple.tagline,
     backgroundColor: invitation.theme?.backgroundColor,
+    story: invitation.story,
+    dressCode: invitation.dressCode,
   };
 }
 
@@ -318,6 +320,8 @@ function atmosphereForTemplate(
       quoteBackground: unsplashUrl("1519225421980-715cb0215aed"),
       detailsAccent: unsplashUrl("1469371670804-432a26d33670"),
       storyAmbience: unsplashUrl("1520854221256-17451cc791c3"),
+      galleryWash: unsplashUrl("1519225421980-715cb0215aed"),
+      venueAmbience: unsplashUrl("1469371670804-432a26d33670"),
     };
   }
   if (templateId === "classic-elegance") {
@@ -325,12 +329,16 @@ function atmosphereForTemplate(
       quoteBackground: unsplashUrl("1465495976277-353ecfa9f2dd"),
       detailsAccent: unsplashUrl("1519167758481-83f29da8ae43"),
       storyAmbience: unsplashUrl("1511285560929-f80fd9e1239a"),
+      galleryWash: unsplashUrl("1465495976277-353ecfa9f2dd"),
+      venueAmbience: unsplashUrl("1519167758481-83f29da8ae43"),
     };
   }
   return {
     quoteBackground: unsplashUrl("1522673607860-1bda3141a7b2"),
     detailsAccent: unsplashUrl("1519167758481-83f29da8ae43"),
     storyAmbience: unsplashUrl("1465495976277-353ecfa9f2dd"),
+    galleryWash: unsplashUrl("1522673607860-1bda3141a7b2"),
+    venueAmbience: unsplashUrl("1519741497674-611481863552"),
   };
 }
 

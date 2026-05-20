@@ -18,6 +18,7 @@ export function CinematicLayer({
   className,
   imageClassName,
   children,
+  foregroundClassName,
   minHeight = "min-h-[50vh]",
 }: {
   imageSrc?: string;
@@ -29,6 +30,7 @@ export function CinematicLayer({
   className?: string;
   imageClassName?: string;
   children?: React.ReactNode;
+  foregroundClassName?: string;
   minHeight?: string;
 }) {
   const lite = useLiteEffects();
@@ -57,7 +59,9 @@ export function CinematicLayer({
         </div>
       )}
       {overlay !== "none" && <CinematicOverlays preset={overlay} />}
-      {children && <div className="relative z-10">{children}</div>}
+      {children && (
+        <div className={cn("relative z-10", foregroundClassName)}>{children}</div>
+      )}
     </section>
   );
 }

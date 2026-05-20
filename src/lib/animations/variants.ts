@@ -54,3 +54,53 @@ export const scaleIn: Variants = {
     transition: { duration: motionDurations.fast },
   },
 };
+
+export const revealSoft: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: motionDurations.base, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const revealEditorial: Variants = {
+  hidden: { opacity: 0, y: 24, scale: 1.02 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: motionDurations.cinematic, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+export const staggerChapter: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.18,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+export const lineReveal: Variants = {
+  hidden: { scaleX: 0, opacity: 0 },
+  visible: {
+    scaleX: 1,
+    opacity: 1,
+    transition: { duration: motionDurations.slow, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export type MotionRevealVariant = "fadeUp" | "revealSoft" | "revealEditorial";
+
+const revealVariants: Record<MotionRevealVariant, Variants> = {
+  fadeUp,
+  revealSoft,
+  revealEditorial,
+};
+
+export function getRevealVariant(name: MotionRevealVariant): Variants {
+  return revealVariants[name];
+}

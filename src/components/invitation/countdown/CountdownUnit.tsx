@@ -1,10 +1,11 @@
 "use client";
 
 import { AnimatePresence, m } from "framer-motion";
+import { useLiteEffects } from "@/components/providers/MotionProvider";
 import { cn } from "@/lib/utils/cn";
 import type { CountdownUnitProps } from "./types";
 
-const digitTransition = {
+const digitTransitionBlur = {
   initial: { opacity: 0, y: 12, filter: "blur(4px)" },
   animate: {
     opacity: 1,
@@ -20,14 +21,31 @@ const digitTransition = {
   },
 };
 
+const digitTransitionLite = {
+  initial: { opacity: 0, y: 8 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as const },
+  },
+  exit: {
+    opacity: 0,
+    y: -6,
+    transition: { duration: 0.25, ease: [0.4, 0, 1, 1] as const },
+  },
+};
+
 export function CountdownUnit({
   label,
   value,
   theme,
   reducedMotion,
 }: CountdownUnitProps) {
+  const lite = useLiteEffects();
   const isLight = theme === "light";
   const display = String(value).padStart(2, "0");
+  const digitTransition =
+    reducedMotion || lite ? digitTransitionLite : digitTransitionBlur;
 
   return (
     <div
