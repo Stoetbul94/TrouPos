@@ -3,6 +3,7 @@
 import type { WeddingInvitationContent } from "@/types/invitation-content";
 import { AmbientSection } from "@/components/cinematic/AmbientSection";
 import { Gallery } from "@/components/invitation/Gallery";
+import { ScrapbookGallery } from "@/components/invitation/ScrapbookGallery";
 import { Container } from "@/components/layout/Container";
 import { MotionSection } from "@/components/motion/MotionSection";
 import { galleryContentToImages } from "@/lib/invitations/contentAdapter";
@@ -15,7 +16,7 @@ export function GallerySection({
   className,
   subtitle = "Moments",
   title = "Our moments",
-  fullBleed = true,
+  composition = "scrapbook",
 }: {
   content: WeddingInvitationContent;
   variant?: "dark" | "light";
@@ -23,7 +24,7 @@ export function GallerySection({
   className?: string;
   subtitle?: string;
   title?: string;
-  fullBleed?: boolean;
+  composition?: "grid" | "scrapbook";
 }) {
   const images = galleryContentToImages(content.galleryImages);
   if (!images.length) return null;
@@ -53,14 +54,12 @@ export function GallerySection({
     </Container>
   );
 
-  const gallery = (
-    <Gallery
-      images={images}
-      variant={variant}
-      showTitle={!showHeading}
-      fullBleed={fullBleed}
-    />
-  );
+  const gallery =
+    composition === "scrapbook" ? (
+      <ScrapbookGallery images={images} variant={variant} />
+    ) : (
+      <Gallery images={images} variant={variant} showTitle={!showHeading} fullBleed />
+    );
 
   if (wash) {
     return (
@@ -69,6 +68,7 @@ export function GallerySection({
         variant={variant === "light" ? "light" : "dark"}
         overlay="none"
         containerWidth="full"
+        washOpacity={0.18}
         className={cn("!py-0", className)}
         contentClassName="py-[var(--section-py)] lg:py-[var(--section-py-lg)]"
       >

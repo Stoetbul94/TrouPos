@@ -1,7 +1,6 @@
 "use client";
 
 import { CinematicLayer } from "@/components/cinematic/CinematicLayer";
-import { useLiteEffects } from "@/components/providers/MotionProvider";
 import { MotionSection } from "@/components/motion/MotionSection";
 import { ParallaxLayer } from "@/components/motion/ParallaxLayer";
 import { Container } from "@/components/layout/Container";
@@ -17,20 +16,13 @@ export function QuoteSection({
   variant?: "dark" | "light";
   backgroundImage?: string;
 }) {
-  const lite = useLiteEffects();
   const { enabled: parallaxEnabled } = useSectionParallax();
   const hasBg = Boolean(backgroundImage);
 
-  const panel = (
+  const quoteContent = (
     <MotionSection
       variant="revealSoft"
-      className={cn(
-        "mx-auto w-full max-w-2xl text-center lg:max-w-3xl",
-        hasBg &&
-          (lite
-            ? "glass-panel-solid rounded-2xl px-6 py-10 sm:px-10 lg:px-14 lg:py-14"
-            : "glass-panel rounded-2xl px-6 py-10 sm:px-10 lg:px-14 lg:py-14"),
-      )}
+      className="mx-auto w-full max-w-2xl text-center lg:max-w-3xl"
     >
       <span
         className={cn(
@@ -45,7 +37,8 @@ export function QuoteSection({
       <blockquote
         className={cn(
           "type-pull-quote mt-2",
-          variant === "light" && !hasBg ? "text-charcoal/80" : "text-ivory/85",
+          hasBg && "quote-text-shadow",
+          variant === "light" && !hasBg ? "text-charcoal/80" : "text-ivory/90",
         )}
       >
         {quote}
@@ -60,10 +53,10 @@ export function QuoteSection({
     >
       {parallaxEnabled && hasBg ? (
         <ParallaxLayer offset={20} className="w-full">
-          {panel}
+          {quoteContent}
         </ParallaxLayer>
       ) : (
-        panel
+        quoteContent
       )}
     </Container>
   );
@@ -79,8 +72,9 @@ export function QuoteSection({
       overlay="quote"
       minHeight="min-h-[40vh] sm:min-h-[50vh] lg:min-h-[55vh]"
       imageClassName="object-cover object-center"
-      sizes="(max-width: 768px) 100vw, 100vw"
+      sizes="100vw"
       foregroundClassName="w-full"
+      className="scrim-strong"
     >
       {inner}
     </CinematicLayer>

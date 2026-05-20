@@ -5,6 +5,7 @@ export const luxuryFloralGoldConfig: TemplateConfig = {
   sections: {
     enabled: [
       "hero",
+      "story",
       "events",
       "venue",
       "gallery",

@@ -49,12 +49,18 @@ export interface WeddingEvent {
   dressCode?: string;
 }
 
+export type GalleryImageLayout = "hero" | "polaroid" | "stack" | "editorial";
+
 export interface GalleryImage {
   id: string;
   src: string;
   alt: string;
   width?: number;
   height?: number;
+  layout?: GalleryImageLayout;
+  rotation?: number;
+  caption?: string;
+  zIndex?: number;
 }
 
 export interface StoryBeat {
@@ -64,6 +70,8 @@ export interface StoryBeat {
   body: string;
   image?: string;
   imageAlt?: string;
+  chapterImage?: string;
+  chapterImageAlt?: string;
 }
 
 export interface InvitationMedia {

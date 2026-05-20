@@ -278,3 +278,29 @@ a,
 [data-lite] .ken-burns {
   animation: none !important;
 }
+
+.scrim-strong .cinematic-hero-glow {
+  opacity: 0.85;
+}
+
+.photo-shadow-editorial {
+  box-shadow:
+    0 4px 24px rgba(15, 14, 12, 0.18),
+    0 12px 48px rgba(15, 14, 12, 0.12);
+}
+
+.photo-shadow-polaroid {
+  box-shadow:
+    0 2px 8px rgba(15, 14, 12, 0.12),
+    0 8px 32px rgba(15, 14, 12, 0.2),
+    0 24px 48px rgba(15, 14, 12, 0.08);
+}
+
+[data-lite] .scrapbook-stack {
+  transform: none !important;
+  margin: 0 !important;
+}
+
+.quote-text-shadow {
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+}

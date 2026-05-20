@@ -31,6 +31,10 @@ export function galleryContentToImages(
     id: img.id ?? `gallery-${i}`,
     src: img.src,
     alt: img.alt,
+    layout: img.layout ?? (i === 0 ? "hero" : "polaroid"),
+    rotation: img.rotation,
+    caption: img.caption,
+    zIndex: img.zIndex,
   }));
 }
 
@@ -211,9 +215,9 @@ export function buildMockInvitation(
     ...contentOverrides,
     atmosphere:
       contentOverrides?.atmosphere ?? atmosphereForTemplate(templateId),
-    story:
-      contentOverrides?.story ??
-      (templateId !== "luxury-floral-gold" ? defaultStory : undefined),
+    story: contentOverrides?.story ?? defaultStoryForTemplate(templateId),
+    coupleSpread:
+      contentOverrides?.coupleSpread ?? coupleSpreadForTemplate(templateId),
     dressCode:
       contentOverrides?.dressCode ??
       (templateId !== "luxury-floral-gold"
@@ -278,14 +282,58 @@ const defaultStory = [
     body: "Thabo asked among the proteas on a Winelands morning — she said yes before he finished the question.",
     image: unsplashUrl("1511285560929-f80fd9e1239a"),
     imageAlt: "Hands intertwined with engagement ring",
+    chapterImage: unsplashUrl("1522673607860-1bda3141a7b2"),
+    chapterImageAlt: "Golden hour in the winelands",
   },
   {
     id: "3",
     year: "2026",
     title: "Forever",
     body: "Now they invite you to celebrate as they say I do.",
+    image: unsplashUrl("1519741497674-611481863552"),
+    imageAlt: "Couple portrait at golden hour",
   },
 ];
+
+const floralStory = [
+  {
+    id: "f1",
+    year: "2020",
+    title: "First dance",
+    body: "A summer evening that felt like the beginning of everything.",
+    image: unsplashUrl("1469371670804-432a26d33670"),
+    imageAlt: "Couple among flowers",
+  },
+  {
+    id: "f2",
+    year: "2026",
+    title: "Our day",
+    body: "We cannot wait to share this celebration with you.",
+    image: unsplashUrl("1520854221256-17451cc791c3"),
+    imageAlt: "Golden floral celebration",
+  },
+];
+
+function defaultStoryForTemplate(templateId: TemplateId) {
+  if (templateId === "luxury-floral-gold") return floralStory;
+  return defaultStory;
+}
+
+function coupleSpreadForTemplate(
+  templateId: TemplateId,
+): WeddingInvitationContent["coupleSpread"] {
+  const image =
+    templateId === "luxury-floral-gold"
+      ? unsplashUrl("1469371670804-432a26d33670")
+      : templateId === "classic-elegance"
+        ? unsplashUrl("1606800052052-a08af8348e18")
+        : unsplashUrl("1519741497674-611481863552");
+  return {
+    image,
+    imageAlt: "Amara and Thabo",
+    line: "Two hearts, one journey — and a celebration written in golden light.",
+  };
+}
 
 function defaultSectionsForTemplate(templateId: TemplateId): SectionId[] {
   return sectionsForTemplate(templateId);
@@ -344,20 +392,88 @@ function atmosphereForTemplate(
 
 function defaultGalleryForTemplate(templateId: TemplateId): GalleryImageContent[] {
   const floral: GalleryImageContent[] = [
-    { src: unsplashUrl("1519225421980-715cb0215aed"), alt: "Floral arch ceremony" },
-    { src: unsplashUrl("1520854221256-17451cc791c3"), alt: "Golden floral tablescape" },
-    { src: unsplashUrl("1469371670804-432a26d33670"), alt: "Couple among proteas" },
-    { src: unsplashUrl("1465495976277-353ecfa9f2dd"), alt: "Winelands golden hour" },
-    { src: unsplashUrl("1511285560929-f80fd9e1239a"), alt: "Hands with wedding bands" },
-    { src: unsplashUrl("1606800052052-a08af8348e18"), alt: "Intimate portrait" },
+    {
+      src: unsplashUrl("1519225421980-715cb0215aed"),
+      alt: "Floral arch ceremony",
+      layout: "hero",
+      caption: "The aisle we dreamed of",
+      rotation: -2,
+    },
+    {
+      src: unsplashUrl("1520854221256-17451cc791c3"),
+      alt: "Golden floral tablescape",
+      layout: "polaroid",
+      caption: "Table for two",
+      rotation: 3,
+      zIndex: 3,
+    },
+    {
+      src: unsplashUrl("1469371670804-432a26d33670"),
+      alt: "Couple among proteas",
+      layout: "stack",
+      rotation: -1.5,
+      zIndex: 2,
+    },
+    {
+      src: unsplashUrl("1465495976277-353ecfa9f2dd"),
+      alt: "Winelands golden hour",
+      layout: "polaroid",
+      rotation: 2,
+    },
+    {
+      src: unsplashUrl("1511285560929-f80fd9e1239a"),
+      alt: "Hands with wedding bands",
+      layout: "stack",
+      rotation: -2.5,
+    },
+    {
+      src: unsplashUrl("1606800052052-a08af8348e18"),
+      alt: "Intimate portrait",
+      layout: "polaroid",
+      rotation: 1,
+    },
   ];
   const standard: GalleryImageContent[] = [
-    { src: unsplashUrl("1606800052052-a08af8348e18"), alt: "Engagement portrait" },
-    { src: unsplashUrl("1465495976277-353ecfa9f2dd"), alt: "Vineyard walk at sunset" },
-    { src: unsplashUrl("1522673607860-1bda3141a7b2"), alt: "Golden hour embrace" },
-    { src: unsplashUrl("1519167758481-83f29da8ae43"), alt: "Winery celebration table" },
-    { src: unsplashUrl("1511285560929-f80fd9e1239a"), alt: "Hands intertwined" },
-    { src: unsplashUrl("1519741497674-611481863552"), alt: "Cinematic couple portrait" },
+    {
+      src: unsplashUrl("1606800052052-a08af8348e18"),
+      alt: "Engagement portrait",
+      layout: "hero",
+      caption: "The moment we said yes to forever",
+      rotation: -2,
+    },
+    {
+      src: unsplashUrl("1465495976277-353ecfa9f2dd"),
+      alt: "Vineyard walk at sunset",
+      layout: "polaroid",
+      caption: "Stellenbosch, 2024",
+      rotation: 2.5,
+      zIndex: 4,
+    },
+    {
+      src: unsplashUrl("1522673607860-1bda3141a7b2"),
+      alt: "Golden hour embrace",
+      layout: "stack",
+      rotation: -1,
+      zIndex: 3,
+    },
+    {
+      src: unsplashUrl("1519167758481-83f29da8ae43"),
+      alt: "Winery celebration table",
+      layout: "polaroid",
+      rotation: 1.5,
+    },
+    {
+      src: unsplashUrl("1511285560929-f80fd9e1239a"),
+      alt: "Hands intertwined",
+      layout: "stack",
+      rotation: -2,
+    },
+    {
+      src: unsplashUrl("1519741497674-611481863552"),
+      alt: "Cinematic couple portrait",
+      layout: "polaroid",
+      rotation: 3,
+    },
   ];
   return templateId === "luxury-floral-gold" ? floral : standard;
 }

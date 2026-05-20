@@ -4,11 +4,13 @@ import Image from "next/image";
 import { m } from "framer-motion";
 import type { WeddingInvitationContent } from "@/types/invitation-content";
 import { CinematicBackground } from "@/components/media/CinematicBackground";
+import { CinematicLayer } from "@/components/cinematic/CinematicLayer";
 import { CoupleNames } from "@/components/invitation/CoupleNames";
 import { CountdownTimer } from "@/components/invitation/CountdownTimer";
 import { Container } from "@/components/layout/Container";
 import { EditorialGrid } from "@/components/layout/EditorialGrid";
 import { FloralParticles } from "@/components/motion/FloralParticles";
+import { FloatingAccent } from "@/components/motion/FloatingAccent";
 import { MotionSection } from "@/components/motion/MotionSection";
 import { ParallaxLayer } from "@/components/motion/ParallaxLayer";
 import { EditorialImage } from "@/components/cinematic/EditorialImage";
@@ -61,7 +63,7 @@ function HeroCinematic({
       initial={reduced ? false : "hidden"}
       animate="visible"
       variants={heroReveal}
-      className={cn("max-w-xl lg:max-w-2xl", textClass)}
+      className={cn("w-full max-w-2xl lg:max-w-3xl xl:max-w-4xl", textClass)}
     >
       <CoupleNames
         couple={{
@@ -69,16 +71,12 @@ function HeroCinematic({
           partnerTwo: content.groomName,
           tagline: content.tagline ?? content.welcomeMessage,
         }}
+        className="lg:text-left"
       />
       <p className="type-eyebrow mt-8 text-center lg:text-left">
         {formatWeddingDate(displayDate)}
       </p>
-      <div
-        className={cn(
-          "mt-10 rounded-xl px-4 py-6 lg:inline-block lg:px-8",
-          theme === "light" ? "bg-white/40" : "glass-panel",
-        )}
-      >
+      <div className="mt-10 border-t border-gold/30 pt-8 lg:max-w-md">
         <CountdownTimer targetDate={content.countdownDate} theme={theme} />
       </div>
     </m.div>
@@ -95,8 +93,9 @@ function HeroCinematic({
         kenBurns
       />
       <GrainLayer intensity="hero" />
+      <FloatingAccent count={4} />
       <Container width="wide" className="relative z-10">
-        <EditorialGrid className="items-end pb-4">
+        <EditorialGrid className="items-end pb-4 lg:min-h-[40vh]">
           {parallaxEnabled ? (
             <ParallaxLayer offset={24}>{foreground}</ParallaxLayer>
           ) : (
@@ -116,65 +115,158 @@ function HeroClassic({
   theme: "dark" | "light";
 }) {
   const reduced = useMotionReduced();
+  const { enabled: parallaxEnabled } = useSectionParallax();
   const displayDate = combineDateAndTime(content.weddingDate, content.weddingTime);
+  const heroImage = content.heroImage;
+
+  const titleBlock = (
+    <m.div
+      initial={reduced ? false : "hidden"}
+      animate="visible"
+      variants={heroReveal}
+      className="text-center text-ivory lg:text-left"
+    >
+      <CoupleNames
+        couple={{
+          partnerOne: content.brideName,
+          partnerTwo: content.groomName,
+          tagline: content.welcomeMessage ?? content.tagline,
+        }}
+        className="[&_p]:text-ivory/70 [&_span]:text-[var(--theme-accent,#b8956a)]"
+      />
+      <p className="type-eyebrow mt-6">{formatWeddingDate(displayDate)}</p>
+    </m.div>
+  );
 
   return (
-    <header className="relative scroll-mt-24 border-b border-charcoal/10 bg-ivory">
-      <div
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-champagne/40 to-transparent lg:block"
-        aria-hidden
-      />
-      <Container width="wide" className="relative py-16 sm:py-24 lg:py-[var(--section-py-lg)]">
-        <EditorialGrid
-          className="items-center gap-10 lg:gap-16"
-          aside={
-            content.heroImage ? (
-              <m.div
-                initial={reduced ? false : "hidden"}
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                variants={revealEditorial}
-                className="lg:min-h-[70vh] lg:flex lg:items-center"
-              >
-                <EditorialImage
-                  src={content.heroImage}
-                  alt={`${content.brideName} and ${content.groomName}`}
-                  aspectRatio="4/5"
-                  sizes="(max-width: 768px) 100vw, 40vw"
-                  priority
-                  className="w-full"
-                />
-              </m.div>
-            ) : undefined
-          }
-          asidePosition="right"
+    <header className="relative scroll-mt-24">
+      {heroImage && (
+        <CinematicLayer
+          imageSrc={heroImage}
+          imageAlt={`${content.brideName} and ${content.groomName}`}
+          overlay="hero"
+          priority
+          minHeight="min-h-[85vh] lg:min-h-[90vh]"
+          imageClassName="object-cover object-[center_35%]"
+          sizes="100vw"
+          foregroundClassName="flex items-end pb-20 lg:pb-28"
         >
-          <MotionSection variant="revealSoft">
-            <CoupleNames
-              couple={{
-                partnerOne: content.brideName,
-                partnerTwo: content.groomName,
-                tagline: content.welcomeMessage ?? content.tagline,
-              }}
-              className="text-charcoal md:text-left [&_p]:text-charcoal/60 [&_span]:text-[var(--theme-accent,#b8956a)]"
-            />
-            <p className="type-eyebrow mt-6 text-center text-gold-muted md:text-left">
-              {formatWeddingDate(displayDate)}
-            </p>
-            <div className="mt-8 text-charcoal [&_p]:text-charcoal/50">
-              <CountdownTimer targetDate={content.countdownDate} theme={theme} />
-            </div>
-          </MotionSection>
-        </EditorialGrid>
-      </Container>
+          <Container width="wide" className="w-full">
+            {parallaxEnabled ? (
+              <ParallaxLayer offset={20}>{titleBlock}</ParallaxLayer>
+            ) : (
+              titleBlock
+            )}
+          </Container>
+        </CinematicLayer>
+      )}
+
+      <div className="border-b border-charcoal/10 bg-ivory">
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-champagne/40 to-transparent lg:block"
+          aria-hidden
+        />
+        <Container width="wide" className="relative py-16 sm:py-20 lg:py-[var(--section-py-lg)]">
+          <EditorialGrid
+            className="items-center gap-10 lg:gap-16"
+            aside={
+              heroImage ? (
+                <m.div
+                  initial={reduced ? false : "hidden"}
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                  variants={revealEditorial}
+                  className="hidden lg:block lg:min-h-[50vh] lg:flex lg:items-center"
+                >
+                  <EditorialImage
+                    src={heroImage}
+                    alt={`${content.brideName} and ${content.groomName}`}
+                    aspectRatio="4/5"
+                    sizes="40vw"
+                    variant="polaroid"
+                    rotation={-1.5}
+                    className="w-full max-w-md"
+                  />
+                </m.div>
+              ) : undefined
+            }
+            asidePosition="right"
+          >
+            <MotionSection variant="revealSoft">
+              {!heroImage && (
+                <CoupleNames
+                  couple={{
+                    partnerOne: content.brideName,
+                    partnerTwo: content.groomName,
+                    tagline: content.welcomeMessage ?? content.tagline,
+                  }}
+                  className="text-charcoal [&_p]:text-charcoal/60"
+                />
+              )}
+              {heroImage && (
+                <div className="lg:hidden">
+                  <EditorialImage
+                    src={heroImage}
+                    alt={`${content.brideName} and ${content.groomName}`}
+                    aspectRatio="4/5"
+                    sizes="100vw"
+                    priority
+                    variant="polaroid"
+                    className="mb-8"
+                  />
+                </div>
+              )}
+              <p className="type-eyebrow mt-6 text-center text-gold-muted lg:text-left">
+                {formatWeddingDate(displayDate)}
+              </p>
+              <div className="mt-8 border-t border-charcoal/10 pt-8 text-charcoal [&_p]:text-charcoal/50">
+                <CountdownTimer targetDate={content.countdownDate} theme={theme} />
+              </div>
+            </MotionSection>
+          </EditorialGrid>
+        </Container>
+      </div>
     </header>
   );
 }
 
 function HeroFloral({ content }: { content: WeddingInvitationContent }) {
   const reduced = useMotionReduced();
+  const { enabled: parallaxEnabled } = useSectionParallax();
   const heroImage = content.heroImage ?? FLORAL_HERO_FALLBACK;
   const displayDate = combineDateAndTime(content.weddingDate, content.weddingTime);
+
+  const foreground = (
+    <m.div
+      variants={staggerContainer}
+      initial={reduced ? false : "hidden"}
+      animate="visible"
+      className="text-center"
+    >
+      <m.p variants={fadeUp} className="type-eyebrow text-[var(--theme-accent,#c9a962)]">
+        {content.welcomeMessage ?? "You are invited"}
+      </m.p>
+      <m.div variants={heroReveal} className="mt-6 text-ivory">
+        <CoupleNames
+          couple={{
+            partnerOne: content.brideName,
+            partnerTwo: content.groomName,
+            tagline: content.tagline,
+          }}
+          className="[&_p]:text-ivory/75 [&_span]:text-[var(--theme-accent,#c9a962)]"
+        />
+      </m.div>
+      <m.p variants={fadeUp} className="type-eyebrow mt-8 text-champagne/90">
+        {formatWeddingDate(displayDate)}
+        <span className="mt-1 block text-xs tracking-[0.25em] text-ivory/60">
+          {content.weddingTime}
+        </span>
+      </m.p>
+      <m.div variants={fadeUp} className="mt-10 border-t border-gold/25 pt-8 text-ivory">
+        <CountdownTimer targetDate={content.countdownDate} theme="dark" />
+      </m.div>
+    </m.div>
+  );
 
   return (
     <header className="relative flex min-h-dvh flex-col justify-end overflow-hidden pb-20 pt-28 lg:min-h-[92vh]">
@@ -198,35 +290,12 @@ function HeroFloral({ content }: { content: WeddingInvitationContent }) {
         <FloralParticles />
       </div>
 
-      <Container width="editorial" className="relative z-10 text-center">
-        <m.div
-          variants={staggerContainer}
-          initial={reduced ? false : "hidden"}
-          animate="visible"
-        >
-          <m.p variants={fadeUp} className="type-eyebrow text-[var(--theme-accent,#c9a962)]">
-            {content.welcomeMessage ?? "You are invited"}
-          </m.p>
-          <m.div variants={heroReveal} className="mt-6 text-ivory">
-            <CoupleNames
-              couple={{
-                partnerOne: content.brideName,
-                partnerTwo: content.groomName,
-                tagline: content.tagline,
-              }}
-              className="[&_p]:text-ivory/75 [&_span]:text-[var(--theme-accent,#c9a962)]"
-            />
-          </m.div>
-          <m.p variants={fadeUp} className="type-eyebrow mt-8 text-champagne/90">
-            {formatWeddingDate(displayDate)}
-            <span className="mt-1 block text-xs tracking-[0.25em] text-ivory/60">
-              {content.weddingTime}
-            </span>
-          </m.p>
-          <m.div variants={fadeUp} className="mt-10 text-ivory">
-            <CountdownTimer targetDate={content.countdownDate} theme="dark" />
-          </m.div>
-        </m.div>
+      <Container width="editorial" className="relative z-10">
+        {parallaxEnabled ? (
+          <ParallaxLayer offset={24}>{foreground}</ParallaxLayer>
+        ) : (
+          foreground
+        )}
       </Container>
 
       <m.a

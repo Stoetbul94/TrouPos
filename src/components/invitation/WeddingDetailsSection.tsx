@@ -6,7 +6,6 @@ import { AmbientSection } from "@/components/cinematic/AmbientSection";
 import { AddToCalendar } from "@/components/invitation/calendar";
 import { OptimizedMedia } from "@/components/media/OptimizedMedia";
 import { useLiteEffects } from "@/components/providers/MotionProvider";
-import { EditorialGrid } from "@/components/layout/EditorialGrid";
 import { Container } from "@/components/layout/Container";
 import { MotionSection } from "@/components/motion/MotionSection";
 import { formatEventTime, formatWeddingDate } from "@/lib/utils/dates";
@@ -52,18 +51,14 @@ export function WeddingDetailsSection({
   const accentImage = content.atmosphere?.detailsAccent;
 
   const eventsList = (
-    <ul
-      className={cn(
-        "divide-y rounded-xl border",
-        isLight
-          ? "divide-charcoal/10 border-charcoal/10 bg-white/40"
-          : "divide-ivory/10 border-ivory/10 bg-ivory/[0.03]",
-      )}
-    >
+    <ul className="space-y-0">
       {events.map((event) => (
         <li
           key={event.id}
-          className={cn("px-5 py-8 first:pt-8 sm:px-8 lg:px-10")}
+          className={cn(
+            "border-t py-10 first:border-t-0 first:pt-0 lg:py-12",
+            isLight ? "border-charcoal/15" : "border-ivory/15",
+          )}
         >
           <p className="type-eyebrow">{formatWeddingDate(event.startsAt, "d MMMM yyyy")}</p>
           <h3
@@ -106,29 +101,6 @@ export function WeddingDetailsSection({
     </ul>
   );
 
-  const accentAside =
-    accentImage && !lite ? (
-      <div
-        className="relative hidden min-h-[18rem] overflow-hidden rounded-2xl lg:block"
-        aria-hidden
-      >
-        <OptimizedMedia
-          src={accentImage}
-          alt=""
-          fill
-          sizes="(max-width: 1024px) 0vw, 35vw"
-          quality={65}
-          className="scale-110 object-cover blur-sm"
-        />
-        <div
-          className={cn(
-            "absolute inset-0",
-            isLight ? "bg-white/25" : "bg-charcoal/40",
-          )}
-        />
-      </div>
-    ) : undefined;
-
   return (
     <AmbientSection
       variant={isLight ? "light" : "dark"}
@@ -145,9 +117,27 @@ export function WeddingDetailsSection({
         >
           The Celebration
         </h2>
-        <EditorialGrid aside={accentAside} asidePosition="right">
-          {eventsList}
-        </EditorialGrid>
+        {accentImage && !lite && (
+          <div className="mb-12 hidden lg:block">
+            <div className="relative min-h-[14rem] overflow-hidden">
+              <OptimizedMedia
+                src={accentImage}
+                alt=""
+                fill
+                sizes="80vw"
+                quality={65}
+                className="object-cover object-center"
+              />
+              <div
+                className={cn(
+                  "absolute inset-0",
+                  isLight ? "bg-ivory/50" : "bg-charcoal/55",
+                )}
+              />
+            </div>
+          </div>
+        )}
+        <div className="max-w-3xl lg:mx-0">{eventsList}</div>
         {showCalendar && (
           <div className="mt-10 flex justify-center px-4 lg:mt-14">
             <AddToCalendar
@@ -221,10 +211,8 @@ function WeddingDetailsCard({
           )}
           <article
             className={cn(
-              "relative rounded-2xl border border-gold/15 p-8 shadow-sm shadow-gold/5 lg:rounded-l-none",
-              lite
-                ? "bg-white/80"
-                : "glass-panel bg-white/50 backdrop-blur-sm",
+              "relative border-l-2 border-gold/30 p-8 lg:rounded-r-2xl lg:rounded-l-none lg:border-l-0 lg:border-t-2 lg:pt-10",
+              lite ? "bg-white/85" : "bg-white/60 backdrop-blur-[2px]",
             )}
           >
             <div

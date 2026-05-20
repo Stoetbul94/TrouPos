@@ -6,10 +6,22 @@ import type { SectionId, StoryBeat, TemplateId } from "./invitation";
  */
 export type FontStyle = "cormorant" | "inter" | "playfair";
 
+import type { GalleryImageLayout } from "./invitation";
+
 export interface GalleryImageContent {
   src: string;
   alt: string;
   id?: string;
+  layout?: GalleryImageLayout;
+  rotation?: number;
+  caption?: string;
+  zIndex?: number;
+}
+
+export interface CoupleSpreadContent {
+  image: string;
+  imageAlt?: string;
+  line?: string;
 }
 
 export interface BankDetails {
@@ -57,6 +69,7 @@ export interface WeddingInvitationContent {
     galleryWash?: string;
     venueAmbience?: string;
   };
+  coupleSpread?: CoupleSpreadContent;
 }
 
 export interface InvitationMeta {

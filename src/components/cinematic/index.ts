@@ -3,3 +3,4 @@ export { CinematicLayer } from "./CinematicLayer";
 export { CinematicOverlays, type OverlayPreset } from "./CinematicOverlays";
 export { EditorialImage } from "./EditorialImage";
 export { GrainLayer } from "./GrainLayer";
+export { PhotoChapter } from "./PhotoChapter";

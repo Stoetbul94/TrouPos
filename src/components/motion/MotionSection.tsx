@@ -7,7 +7,7 @@ import {
   type MotionRevealVariant,
 } from "@/lib/animations/variants";
 import { defaultViewport } from "@/lib/animations/viewport";
-import { useMotionReduced } from "@/components/providers/MotionProvider";
+import { useLiteEffects, useMotionReduced } from "@/components/providers/MotionProvider";
 import { cn } from "@/lib/utils/cn";
 
 export function MotionSection({
@@ -20,8 +20,9 @@ export function MotionSection({
   variant?: MotionRevealVariant;
 }) {
   const reduced = useMotionReduced();
+  const lite = useLiteEffects();
 
-  if (reduced) {
+  if (reduced || lite) {
     return <div className={className}>{children}</div>;
   }
 

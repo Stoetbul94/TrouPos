@@ -17,6 +17,7 @@ export function AmbientSection({
   contentClassName,
   containerWidth = "prose",
   overlay = "none",
+  washOpacity = 0.12,
   id,
 }: {
   children: React.ReactNode;
@@ -27,6 +28,8 @@ export function AmbientSection({
   contentClassName?: string;
   containerWidth?: import("@/components/layout/Container").ContainerWidth;
   overlay?: "sectionDark" | "sectionLight" | "none";
+  /** Background image opacity (0–1) */
+  washOpacity?: number;
   id?: string;
 }) {
   const lite = useLiteEffects();
@@ -53,10 +56,8 @@ export function AmbientSection({
       {backgroundImage && (
         <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
           <div
-            className={cn(
-              "absolute inset-0 opacity-[0.12]",
-              !lite && "scale-110",
-            )}
+            className={cn("absolute inset-0", !lite && "scale-110")}
+            style={{ opacity: washOpacity }}
           >
             <OptimizedMedia
               src={backgroundImage}

@@ -1,8 +1,8 @@
 "use client";
 
 import { AmbientSection } from "@/components/cinematic/AmbientSection";
-import { useLiteEffects } from "@/components/providers/MotionProvider";
 import { MotionSection } from "@/components/motion/MotionSection";
+import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils/cn";
 
 export function DressCode({
@@ -12,28 +12,25 @@ export function DressCode({
   dressCode: string;
   variant?: "dark" | "light";
 }) {
-  const lite = useLiteEffects();
-
   return (
     <AmbientSection
       variant={variant === "light" ? "light" : "elevated"}
-      className="!py-12"
-      contentClassName="max-w-3xl mx-auto"
+      containerWidth="editorial"
+      className="!py-12 lg:!py-16"
     >
-      <MotionSection
-        className={cn(
-          "mx-auto max-w-xl rounded-2xl px-8 py-10 text-center",
-          lite
-            ? "border border-ivory/10 bg-charcoal/80"
-            : "glass-panel",
-          variant === "light" && lite && "border-charcoal/10 bg-white/80",
-        )}
-      >
-        <p className="type-eyebrow">Dress Code</p>
-        <p className="mt-4 font-display text-xl leading-relaxed sm:text-2xl">
-          {dressCode}
-        </p>
-      </MotionSection>
+      <Container width="narrow" className="text-center">
+        <MotionSection variant="revealSoft">
+          <p className="type-eyebrow">Dress Code</p>
+          <p
+            className={cn(
+              "type-pull-quote mt-6 max-w-xl mx-auto",
+              variant === "light" ? "text-charcoal/85" : "text-ivory/90",
+            )}
+          >
+            {dressCode}
+          </p>
+        </MotionSection>
+      </Container>
     </AmbientSection>
   );
 }

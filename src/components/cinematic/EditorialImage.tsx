@@ -4,6 +4,8 @@ import { OptimizedMedia } from "@/components/media/OptimizedMedia";
 import { cn } from "@/lib/utils/cn";
 import { CinematicOverlays } from "./CinematicOverlays";
 
+export type EditorialImageVariant = "framed" | "flush" | "polaroid";
+
 export function EditorialImage({
   src,
   alt,
@@ -13,6 +15,8 @@ export function EditorialImage({
   quality = 75,
   className,
   imageClassName,
+  variant = "framed",
+  rotation = 0,
 }: {
   src: string;
   alt: string;
@@ -22,13 +26,20 @@ export function EditorialImage({
   quality?: number;
   className?: string;
   imageClassName?: string;
+  variant?: EditorialImageVariant;
+  rotation?: number;
 }) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-sm shadow-xl shadow-black/20",
+        "relative overflow-hidden",
+        variant === "framed" && "rounded-sm photo-shadow-editorial",
+        variant === "polaroid" &&
+          "border-[10px] border-white/90 bg-white/95 p-2 photo-shadow-polaroid",
+        variant === "flush" && "rounded-none shadow-none",
         className,
       )}
+      style={rotation ? { transform: `rotate(${rotation}deg)` } : undefined}
     >
       <OptimizedMedia
         src={src}

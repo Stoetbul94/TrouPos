@@ -16,6 +16,7 @@ import { GiftRegistrySection } from "@/components/invitation/GiftRegistrySection
 import { InvitationThemeProvider } from "@/components/invitation/InvitationThemeProvider";
 import { BackgroundMusicPlayer } from "@/components/invitation/BackgroundMusicPlayer";
 import { QuoteSection } from "@/components/invitation/QuoteSection";
+import { CoupleEditorialSpread } from "@/components/invitation/CoupleEditorialSpread";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { bankDetailsToGift } from "@/lib/invitations/contentAdapter";
 import { scrollToRsvp } from "@/lib/invitations/scrollToRsvp";
@@ -91,9 +92,18 @@ export function InvitationTemplateLayout({
             </>
           )}
 
+          {content.coupleSpread && (
+            <>
+              <SectionTransitionBand dark={shellVariant === "dark"} />
+              <CoupleEditorialSpread spread={content.coupleSpread} variant={uiVariant} />
+            </>
+          )}
+
           {meta.sections.includes("story") && content.story && content.story.length > 0 && (
             <>
-              {content.quote && <SectionTransitionBand dark={shellVariant === "dark"} />}
+              {(content.quote || content.coupleSpread) && (
+                <SectionTransitionBand dark={shellVariant === "dark"} />
+              )}
               <Section
                 id="story"
                 className={cn(

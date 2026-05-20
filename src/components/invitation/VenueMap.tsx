@@ -3,6 +3,7 @@
 import type { WeddingInvitationContent } from "@/types/invitation-content";
 import { AmbientSection } from "@/components/cinematic/AmbientSection";
 import { MapEmbed } from "@/components/invitation/MapEmbed";
+import { BleedContainer } from "@/components/layout/BleedContainer";
 import { Container } from "@/components/layout/Container";
 import { MotionSection } from "@/components/motion/MotionSection";
 import { contentToVenue } from "@/lib/invitations/contentAdapter";
@@ -27,14 +28,9 @@ export function VenueMap({
   const wash = ambienceImage ?? content.atmosphere?.venueAmbience;
 
   const mapBlock = (
-    <div
-      className={cn(
-        variant === "dark" && "mx-auto max-w-3xl lg:max-w-4xl",
-        variant === "dark" && !wash && "rounded-xl border border-ivory/10 glass-panel p-1",
-      )}
-    >
+    <BleedContainer>
       <MapEmbed venue={venue} variant={variant} showTitle={false} />
-    </div>
+    </BleedContainer>
   );
 
   if (!showHeading) {
@@ -67,7 +63,7 @@ export function VenueMap({
           </h2>
         </MotionSection>
       </Container>
-      <Container width="editorial">{mapBlock}</Container>
+      {mapBlock}
     </>
   );
 
@@ -79,11 +75,12 @@ export function VenueMap({
         variant={variant === "light" ? "light" : "dark"}
         overlay="none"
         containerWidth="full"
+        washOpacity={0.2}
         className={cn("scroll-mt-24 !py-0", className)}
         contentClassName="py-[var(--section-py)] lg:py-[var(--section-py-lg)]"
       >
         <div
-          className="pointer-events-none mb-8 h-px w-full max-w-3xl mx-auto bg-gradient-to-r from-transparent via-gold/20 to-transparent lg:mb-12"
+          className="pointer-events-none mx-auto mb-8 h-px w-full max-w-xl bg-gradient-to-r from-transparent via-gold/20 to-transparent lg:mb-12"
           aria-hidden
         />
         {inner}
