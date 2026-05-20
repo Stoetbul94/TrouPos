@@ -1,6 +1,7 @@
 import type { Invitation } from "@/types/invitation";
 import { invitationToContent } from "@/lib/invitations/contentAdapter";
 import { templateRegistry } from "@/templates/registry";
+import { InvitationWithIntro } from "@/components/invitation/InvitationWithIntro";
 
 export function InvitationView({ invitation }: { invitation: Invitation }) {
   const Template = templateRegistry[invitation.templateId];
@@ -14,5 +15,9 @@ export function InvitationView({ invitation }: { invitation: Invitation }) {
     sections: invitation.sections,
   };
 
-  return <Template content={content} meta={meta} />;
+  return (
+    <InvitationWithIntro slug={invitation.slug}>
+      <Template content={content} meta={meta} />
+    </InvitationWithIntro>
+  );
 }

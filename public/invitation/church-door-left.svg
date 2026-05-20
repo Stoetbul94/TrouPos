@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 720" fill="none" role="img" aria-label="Church door left panel">
+  <defs>
+    <linearGradient id="woodL" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1410"/>
+      <stop offset="45%" stop-color="#2d2218"/>
+      <stop offset="100%" stop-color="#120e0b"/>
+    </linearGradient>
+    <linearGradient id="goldL" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8c97a"/>
+      <stop offset="50%" stop-color="#c9a227"/>
+      <stop offset="100%" stop-color="#8a6b1f"/>
+    </linearGradient>
+    <filter id="shadowL" x="-20%" y="-10%" width="140%" height="120%">
+      <feDropShadow dx="-4" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadowL)">
+    <path d="M8 40 Q160 0 312 40 L312 680 Q160 720 8 680 Z" fill="url(#woodL)"/>
+    <path d="M8 40 Q160 0 312 40 L312 680 Q160 720 8 680 Z" stroke="url(#goldL)" stroke-width="3" fill="none" opacity="0.85"/>
+    <path d="M24 80 Q160 48 296 80 L296 640 Q160 672 24 640 Z" stroke="#c9a227" stroke-width="1.5" fill="none" opacity="0.35"/>
+    <rect x="36" y="120" width="248" height="8" rx="2" fill="#c9a227" opacity="0.2"/>
+    <rect x="36" y="200" width="248" height="6" rx="2" fill="#c9a227" opacity="0.15"/>
+    <rect x="36" y="280" width="248" height="6" rx="2" fill="#c9a227" opacity="0.12"/>
+    <rect x="36" y="360" width="248" height="6" rx="2" fill="#c9a227" opacity="0.12"/>
+    <rect x="36" y="440" width="248" height="6" rx="2" fill="#c9a227" opacity="0.12"/>
+    <rect x="36" y="520" width="248" height="6" rx="2" fill="#c9a227" opacity="0.15"/>
+    <circle cx="280" cy="360" r="14" fill="#1a1410" stroke="url(#goldL)" stroke-width="2"/>
+    <circle cx="280" cy="360" r="5" fill="#c9a227" opacity="0.6"/>
+    <path d="M40 60 Q160 28 280 60" stroke="#e8c97a" stroke-width="2" fill="none" opacity="0.5"/>
+  </g>
+</svg>
